@@ -26,7 +26,7 @@ class Member(models.Model):
     membership_id = models.CharField(max_length=255, blank=True, null=False)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    dob = models.DateTimeField(null=True)
+    dob = models.DateField(null=True)
     wo_ho_so_do = models.CharField(max_length=255)
     home_address = models.CharField(max_length=512)
     mobile_number_1 = models.CharField(max_length=10)
@@ -70,6 +70,18 @@ class MedicalProfile(models.Model):
         Member, on_delete=models.CASCADE, related_name="medical_profile"
     )
 
+    surgery_history = models.TextField(null=True, blank=True)
+    family_disease_history = models.TextField(null=True, blank=True)
+    hospitalized_history = models.TextField(null=True, blank=True)
+
+    chronic_ear_disease = models.TextField(null=True, blank=True)
+    addiction_history = models.TextField(null=True, blank=True)
+    thyroid_history = models.TextField(null=True, blank=True)
+    prolonged_drug_intake_history = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.member.first_name} {self.member.last_name}'s profile "
+
 
 class Disease(models.Model):
     DISEASE_CHOICE = (
@@ -88,6 +100,9 @@ class Disease(models.Model):
             MaxValueValidator(datetime.date.today().year),
         ]
     )
+
+    def __str__(self):
+        return f"{self.disease} - {self.member.first_name} {self.member.last_name}"
 
 
 @receiver(post_save, sender=Disease)
@@ -113,3 +128,69 @@ class Goal(models.Model):
 
     def __str__(self):
         return f"{self.member.first_name + ' ' + self.member.last_name} - {self.goal}"
+
+
+class GeneralExamination(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    blood_pressure = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(200),
+        ],
+        null=True,
+        blank=True,
+    )
+    pulse = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(300),
+        ],
+        null=True,
+        blank=True,
+    )
+
+    height = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(300),
+        ],
+        null=True,
+        blank=True,
+    )
+
+    weight = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(300),
+        ],
+        null=True,
+        blank=True,
+    )
+
+    chest_unexpanded = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(300),
+        ],
+        null=True,
+        blank=True,
+    )
+    chest_expanded = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(300),
+        ],
+        null=True,
+        blank=True,
+    )
+    others = models.TextField(null=True, blank=True)
+
+
+class SystemicExamination(models.Model):
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    cns = models.TextField(null=True, blank=True)
+    cvs = models.TextField(null=True, blank=True)
+    git = models.TextField(null=True, blank=True)
+    rs = models.TextField(null=True, blank=True)
+    ent = models.TextField(null=True, blank=True)
+    others = models.TextField(null=True, blank=True)
