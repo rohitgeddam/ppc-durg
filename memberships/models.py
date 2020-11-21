@@ -98,7 +98,7 @@ class Disease(models.Model):
         validators=[
             MinValueValidator(datetime.date.today().year - 100),
             MaxValueValidator(datetime.date.today().year),
-        ]
+        ],
     )
 
     def __str__(self):
@@ -126,7 +126,7 @@ class Goal(models.Model):
         ("to improve cardiovascular", "to improve cardiovascular"),
     )
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    goal = models.CharField(max_length=255, choices=GOAL_CHOICES, null=True)
+    goal = models.CharField(max_length=255, choices=GOAL_CHOICES, null=False)
     other_goals = models.TextField(blank=True, null=True)
 
     def __str__(self):

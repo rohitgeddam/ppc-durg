@@ -1,0 +1,8 @@
+{% extends '_base.html' %}
+{% block content %}
+<form method="post" action="{% url 'registerstep4'  pk=member_id%}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="next">
+</form>
+{% endblock content %}

@@ -26,23 +26,69 @@ def goal_form(request, pk):
     if request.method == "POST":
         formset = forms.GoalFormSet(
             request.POST,
-            queryset=models.Goal.objects.none(),
         )
         if formset.is_valid():
             # do something with the formset.cleaned_data
             for form in formset:
-                form.save(commit=False)
-                form.instance.member = member
-                form.save()
 
-            # return HttpResponseRedirect(reverse("registerstep2", args=[pk]))
-            return render(request, "memberships/registeration_done.html")
+                if form.cleaned_data != {}:
+                    form.save(commit=False)
+                    form.instance.member = member
+                    form.save()
+
+            return HttpResponseRedirect(reverse("registerstep3", args=[pk]))
+            # return render(request, "memberships/registeration_done.html")
     else:
-        formset = forms.GoalFormSet(
-            queryset=models.Goal.objects.none(),
-        )
+        formset = forms.GoalFormSet()
     return render(
         request,
         "memberships/registeration_step2.html",
+        {"form": formset, "member_id": pk},
+    )
+
+
+def medicalprofile_form(request, pk):
+    member = models.Member.objects.filter(pk=pk).first()
+
+    if request.method == "POST":
+        form = forms.MedicalProfileForm(request.POST)
+        if form.is_valid():
+            # do something with the formset.cleaned_data
+            form.save(commit=False)
+            form.instance.member = member
+            form.save()
+            return HttpResponseRedirect(reverse("registerstep4", args=[pk]))
+
+    else:
+        form = forms.MedicalProfileForm()
+    return render(
+        request, "memberships/registeration_step3.html", {"form": form, "member_id": pk}
+    )
+
+
+def disease_form(request, pk):
+    member = models.Member.objects.filter(pk=pk).first()
+    if request.method == "POST":
+        formset = forms.DiseaseFormset(
+            request.POST,
+            queryset=models.Disease.objects.none(),
+        )
+        if formset.is_valid():
+            # do something with the formset.cleaned_data
+            for form in formset:
+                # form.save(commit=False)
+                if form.cleaned_data != {}:
+                    form.instance.member = member
+                    form.save()
+
+            # return HttpResponseRedirect(reverse("registerstep3", args=[pk]))
+            return render(request, "memberships/registeration_done.html")
+    else:
+        formset = forms.DiseaseFormset(
+            queryset=models.Disease.objects.none(),
+        )
+    return render(
+        request,
+        "memberships/registeration_step4.html",
         {"form": formset, "member_id": pk},
     )
