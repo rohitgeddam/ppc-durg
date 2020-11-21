@@ -1,4 +1,4 @@
 from django.urls import path
 from memberships import views
 
-urlpatterns = []
+urlpatterns = [path("register/", views.membership_form, name="register")]
