@@ -1,8 +1,8 @@
 {% extends '_base.html' %}
 {% block content %}
-<form method="post" action="{% url 'register' %}">
+<form method="post" action="{% url 'registerstep2'  pk=member_id%}">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" value="register">
+    <input type="submit" value="next">
 </form>
 {% endblock content %}
