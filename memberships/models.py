@@ -110,10 +110,13 @@ def post_disease_handler(sender, instance, created, **kwargs):
     if created:
         try:
             instance.medical_profile = instance.member.medical_profile
+            instance.save()
         # print("medical_profile", instance.medical_profile)
         except:
-            MedicalProfile(member=instance.member).save()
-            instance.medical_profile = instance.member.medical_profile
+            medi_profile = MedicalProfile(member=instance.member)
+            medi_profile.save()
+            instance.medical_profile = medi_profile
+            instance.save()
 
 
 class Goal(models.Model):
@@ -194,3 +197,45 @@ class SystemicExamination(models.Model):
     rs = models.TextField(null=True, blank=True)
     ent = models.TextField(null=True, blank=True)
     others = models.TextField(null=True, blank=True)
+
+
+class Fee(models.Model):
+    MEMBERSHIP_CHOICES = (
+        ("yearly", "yearly"),
+        ("half yearly", "half yearly"),
+        ("monthly", "monthly"),
+    )
+
+    PAYMENT_METHOD = (("cash", "cash"), ("online", "online"))
+
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    payment_type = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICES)
+    date_of_payment = models.DateTimeField(auto_now_add=True)
+    next_due_date = models.DateField(null=True, blank=True)
+    amount_paid = models.PositiveBigIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.member.first_name} {self.member.last_name} paid {self.amount_paid} on {self.date_of_payment}"
+
+
+@receiver(post_save, sender=Fee)
+def post_fee_save(sender, instance, created, **kwargs):
+    if created:
+        try:
+            if instance.payment_type == "yearly":
+                instance.next_due_date = instance.date_of_payment + datetime.timedelta(
+                    days=365
+                )
+            elif instance.payment_type == "half yearly":
+                instance.next_due_date = instance.date_of_payment + datetime.timedelta(
+                    days=183
+                )
+            else:
+                instance.next_due_date = instance.date_of_payment + datetime.timedelta(
+                    days=31
+                )
+
+        except:
+            instance.amount_paid = "-1"
+
+        instance.save()
