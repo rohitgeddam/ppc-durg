@@ -13,20 +13,13 @@ class Trainer(models.Model):
     trainer_id = models.CharField(max_length=255, blank=True, null=False)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    dob = models.DateTimeField(null=True)
+    dob = models.DateField(null=True)
     home_address = models.CharField(max_length=512)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
-    def save(self, *args, **kwargs):
-        trainer = Trainer.objects.filter(pk=self.pk).first()
-        if not trainer:
-            last_trainer = Trainer.objects.all().last()
-            self.trainer_id = "T" + "{0}".format(str(last_trainer.pk).zfill(4))
-        super(Member, self).save(*args, **kwargs)
 
 
 class Member(models.Model):
@@ -46,12 +39,30 @@ class Member(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-    def save(self, *args, **kwargs):
-        member = Member.objects.filter(pk=self.pk).first()
-        if not member:
+
+@receiver(post_save, sender=Member)
+def post_member_save(sender, instance, created, **kwargs):
+    print("member", created)
+    if created:
+        try:
             last_member = Member.objects.all().last()
-            self.membership_id = "M" + "{0}".format(str(last_member.pk).zfill(6))
-        super(Member, self).save(*args, **kwargs)
+            instance.membership_id = "M" + "{0}".format(str(last_member.pk).zfill(6))
+        except:
+            instance.membership_id = "-1"
+
+        instance.save()
+
+
+@receiver(post_save, sender=Trainer)
+def post_trainer_save(sender, instance, created, **kwargs):
+    if created:
+        try:
+            last_member = Trainer.objects.all().last()
+            instance.trainer_id = "T" + "{0}".format(str(last_member.pk).zfill(4))
+        except:
+            instance.trainer_id = "-1"
+
+        instance.save()
 
 
 class MedicalProfile(models.Model):
