@@ -6,3 +6,5 @@ from memberships import models
 admin.site.register(models.Trainer)
 admin.site.register(models.Member)
 admin.site.register(models.Goal)
+admin.site.register(models.Disease)
+admin.site.register(models.MedicalProfile)
