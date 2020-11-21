@@ -11,10 +11,10 @@ from django.dispatch import receiver
 
 class Trainer(models.Model):
     trainer_id = models.CharField(max_length=255, blank=True, null=False)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    dob = models.DateField(null=True)
-    home_address = models.CharField(max_length=512)
+    first_name = models.CharField(max_length=255, null=False, blank=False)
+    last_name = models.CharField(max_length=255, null=False, blank=False)
+    dob = models.DateField(null=False, blank=False, default="2000-05-08")
+    home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10)
 
@@ -24,11 +24,11 @@ class Trainer(models.Model):
 
 class Member(models.Model):
     membership_id = models.CharField(max_length=255, blank=True, null=False)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    dob = models.DateField(null=True)
-    wo_ho_so_do = models.CharField(max_length=255)
-    home_address = models.CharField(max_length=512)
+    first_name = models.CharField(max_length=255, null=False, blank=False)
+    last_name = models.CharField(max_length=255, null=False, blank=False)
+    dob = models.DateField(null=False, blank=False, default="2000-05-08")
+    wo_ho_so_do = models.CharField(max_length=255, null=False, blank=False)
+    home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10)
 
@@ -123,7 +123,7 @@ class Goal(models.Model):
         ("to improve cardiovascular", "to improve cardiovascular"),
     )
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    goal = models.CharField(max_length=255, choices=GOAL_CHOICES)
+    goal = models.CharField(max_length=255, choices=GOAL_CHOICES, null=True)
     other_goals = models.TextField(blank=True, null=True)
 
     def __str__(self):
