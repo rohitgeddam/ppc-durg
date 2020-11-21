@@ -48,3 +48,12 @@ DiseaseFormset = modelformset_factory(
     exclude=["member", "medical_profile"],
     extra=3,
 )
+
+
+class FeeForm(ModelForm):
+    class Meta:
+        model = models.Fee
+        exclude = ["member", "next_due_date", "date_of_payment"]
+        # widgets = {
+        #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),
+        # }
