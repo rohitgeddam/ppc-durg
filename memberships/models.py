@@ -32,6 +32,7 @@ class Member(models.Model):
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10)
 
+    is_active = models.BooleanField(default=False)
     trainer = models.ForeignKey(
         Trainer, on_delete=models.SET_NULL, blank=True, null=True
     )
