@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock styles%}
+
 {% block content-space %}
 
     
@@ -8,11 +14,14 @@
             <h6 class="m-0 font-weight-bold text-primary">Members List</h6>
         </div>
         <div class="card-body">
-            <form method='GET'>
-                <input type='text' name='q' value='{{ request.GET.q }}'>
-                <input class="button" type='submit' value="Search Profile">
-              </form>
+            
             <div class="table-responsive">
+                
+                    <form method='GET' class="search_box">
+                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Membership ID">
+                        <input class="btn btn-warning" type='submit' value="Search Profile">
+                    </form>
+                
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
