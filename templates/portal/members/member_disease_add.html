@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content-space %}
-<form method="post" action="{% url 'member_details_update' object.pk %}">
+<form method="post" action="{% url 'member_disease_create' member_id %}">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" value="Update">
+    <input type="submit" value="Add">
 </form>
 {% endblock content-space %}

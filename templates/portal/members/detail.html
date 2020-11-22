@@ -38,8 +38,8 @@
      
         <tbody>
             <tr>
-                <td>last Name</td>
-                <td>{{member.last_name}}</td>
+                <td>First Name</td>
+                <td>{{member.first_name}}</td>
             </tr>
             <tr>
                 <td>Last Name</td>
@@ -63,8 +63,8 @@
             </tr>
             {% if member.mobile_number_2 %}
             <tr>
-                <td>Mobile Number 1</td>
-                <td>{{member.mobile_number_1}}</td>
+                <td>Mobile Number 2</td>
+                <td>{{member.mobile_number_2}}</td>
             </tr>
             {% endif %}
            
@@ -80,12 +80,12 @@
 
         <hr>
         <h4>Goals</h4>
-        <a href="#">Add new Goals</a>
+        <a href="{% url 'member_goal_create' member_pk%}">Add new Goals</a>
         {% if goals %}
         {% for goal in goals %}
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">{{goal.goal}}</h6>
+                <a href="{% url 'member_goals_update' member.pk goal.pk %}" class="m-0 font-weight-bold text-primary">{{goal.goal}}</a>
             </div>
             <div class="card-body">
                 {% if goal.completed %}
@@ -108,7 +108,7 @@
     <div class="tab-pane fade" id="medical" role="tabpanel" aria-labelledby="medical-tab">
         <hr>
         <h4>Medical Profile</h4>
-        <a href="">Edit Medical Profile</a>
+        <a href="{% url 'member_medical_profile_update' member_pk medical_profile.pk%}">Edit Medical Profile</a>
         <div class="card shadow mb-4">
             <!-- Card Header - Accordion -->
             <a href="#surgeryHistory" class="d-block card-header py-3" data-toggle="collapse"
@@ -203,7 +203,7 @@
         </div>
         <hr>
         <h4>Diseases</h4>
-        <a href="#">Add Diseases</a>
+        <a href="{% url 'member_disease_create' member.pk %}">Add Diseases</a>
         {% if diseases %}
         {% for disease in diseases %}
             <div class="card shadow mb-4">
@@ -227,7 +227,7 @@
         
         
         <div class="card-body">
-            <a href="#">Take A New General Exam</a>
+            <a href="{% url 'member_general_exam_create' member.pk%}">Take A New General Exam</a>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
         <thead>
@@ -358,12 +358,12 @@
     <div class="tab-pane fade" id="systemic" role="tabpanel" aria-labelledby="systemic-tab">
 
         <div class="card-body">
-            <a href="#">Take A New Systemic Exam</a>
+            <a href="{% url 'member_systemic_exam_create' member.pk%}">Take A New Systemic Exam</a>
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
             <tr>
-                <th>Examination on ({{systemic_examination.date_of_examination}})</th>
+                <th>Examination on ({{systemic_examination.last.date_of_examination}})</th>
                 <th>Result</th>
                 
             </tr>
@@ -439,27 +439,27 @@
                                 <tbody>
                                     <tr>
                                         <td>C.N.S</td>
-                                        <td>{{systemic_examination.last.cns}}</td>
+                                        <td>{{exam.cns}}</td>
                                     </tr>
                                     <tr>
                                         <td>C.V.S</td>
-                                        <td>{{systemic_examination.last.cvs}}</td>
+                                        <td>{{exam.cvs}}</td>
                                     </tr>
                                     <tr>
                                         <td>G.I.T</td>
-                                        <td>{{systemic_examination.last.git}}</td>
+                                        <td>{{exam.git}}</td>
                                     </tr>
                                     <tr>
                                         <td>R/S</td>
-                                        <td>{{systemic_examination.last.rs}}</td>
+                                        <td>{{exam.rs}}</td>
                                     </tr>
                                     <tr>
                                         <td>E.N.T</td>
-                                        <td>{{systemic_examination.last.ent}}</td>
+                                        <td>{{exam.ent}}</td>
                                     </tr>
                                     <tr>
                                         <td>Others</td>
-                                        <td>{{systemic_examination.last.others}}</td>
+                                        <td>{{exam.others}}</td>
                                     </tr>
                                    
                                 </tbody>

@@ -1,5 +1,6 @@
-from django.shortcuts import render, reverse
-from django.views.generic import ListView, UpdateView
+from django.shortcuts import render
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, UpdateView, CreateView
 from memberships.models import (
     Member,
     MedicalProfile,
@@ -12,13 +13,16 @@ from django.db.models import Q
 from django.db.models import Value as V
 from django.db.models.functions import Concat
 
-
+from django.http import HttpResponseRedirect
 from memberships.forms import (
     MemberForm,
     GoalForm,
+    GoalFormSet,
     MedicalProfileForm,
     DiseaseFormset,
     FeeForm,
+    GeneralExamForm,
+    SystemicExamForm,
 )
 
 # Create your views here.
@@ -65,8 +69,136 @@ def memberProfileView(request, pk):
     return render(request, "portal/members/detail.html", context)
 
 
-# class MemberDetailsUpdate(UpdateView):
-#     model = Member
-#     form_class = MemberForm
-#     template_name = "member_details_update.html"
-#     success_url = reverse("members_profile")
+class MemberDetailsUpdate(UpdateView):
+    model = Member
+    form_class = MemberForm
+    template_name = "portal/members/member_details_update.html"
+    context_object_name = "object"
+
+    def get_success_url(self):
+
+        memberPk = self.kwargs["pk"]
+        return reverse_lazy("members_profile", kwargs={"pk": memberPk})
+
+
+def goalCreateView(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    if request.method == "POST":
+        formset = GoalFormSet(
+            request.POST,
+        )
+        if formset.is_valid():
+            # do something with the formset.cleaned_data
+            for form in formset:
+
+                if form.cleaned_data != {}:
+                    form.save(commit=False)
+                    form.instance.member = member
+                    form.save()
+
+            return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
+            # return render(request, "memberships/registeration_done.html")
+    else:
+        formset = GoalFormSet()
+    return render(
+        request,
+        "portal/members/member_add_goal.html",
+        {"form": formset, "member_id": pk},
+    )
+
+
+class GoalUpdateView(UpdateView):
+    model = Goal
+    # fields = "__all__"
+    form_class = GoalForm
+    template_name = "portal/members/member_goal_update.html"
+    context_object_name = "object"
+
+    def get_success_url(self):
+
+        memberPk = self.kwargs["memberId"]
+        return reverse_lazy("members_profile", kwargs={"pk": memberPk})
+
+
+class MedicalProfileUpdateView(UpdateView):
+    model = MedicalProfile
+    # fields = "__all__"
+    form_class = MedicalProfileForm
+    template_name = "portal/members/member_medical_profile_update.html"
+    context_object_name = "object"
+
+    def get_success_url(self):
+
+        memberPk = self.kwargs["memberId"]
+        return reverse_lazy("members_profile", kwargs={"pk": memberPk})
+
+
+def diseaseAddView(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    if request.method == "POST":
+        formset = DiseaseFormset(
+            request.POST,
+            queryset=Disease.objects.none(),
+        )
+        if formset.is_valid():
+            # do something with the formset.cleaned_data
+            for form in formset:
+                # form.save(commit=False)
+                if form.cleaned_data != {}:
+                    form.instance.member = member
+                    form.save()
+
+            return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
+    else:
+        formset = DiseaseFormset(
+            queryset=Disease.objects.none(),
+        )
+    return render(
+        request,
+        "portal/members/member_disease_add.html",
+        {"form": formset, "member_id": pk},
+    )
+
+
+def GeneralExamCreateView(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    if request.method == "POST":
+        form = GeneralExamForm(
+            request.POST,
+        )
+        if form.is_valid():
+            # do something with the formset.cleaned_data
+
+            form.instance.member = member
+            form.save()
+
+            return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
+    else:
+        form = GeneralExamForm()
+    return render(
+        request,
+        "portal/members/member_general_exam_add.html",
+        {"form": form, "member_id": pk},
+    )
+
+
+def SystemicExamCreateView(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    if request.method == "POST":
+        form = SystemicExamForm(
+            request.POST,
+        )
+        if form.is_valid():
+            # do something with the formset.cleaned_data
+
+            form.instance.member = member
+            form.save()
+
+            return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
+    else:
+        form = SystemicExamForm()
+    return render(
+        request,
+        "portal/members/member_systemic_exam_add.html",
+        {"form": form, "member_id": pk},
+    )

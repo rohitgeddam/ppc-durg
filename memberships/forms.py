@@ -16,6 +16,22 @@ class MemberForm(ModelForm):
         # }
 
 
+class GeneralExamForm(ModelForm):
+    class Meta:
+        model = models.GeneralExamination
+        exclude = [
+            "member",
+        ]
+
+
+class SystemicExamForm(ModelForm):
+    class Meta:
+        model = models.SystemicExamination
+        exclude = [
+            "member",
+        ]
+
+
 # GoalFormSet = modelformset_factory(
 #     models.Goal,
 #     exclude=["member", "other_goals"],
