@@ -54,7 +54,7 @@
                             <td>{{member.trainer.first_name}} {{member.trainer.last_name}}</td>
                             <td>{{member.trainer.dob}}</td>
                             <td>{{member.is_active}}</td>
-                            <td><a href="#">View</a></td>
+                            <td><a href="{% url 'members_profile' member.pk %}">View</a></td>
                         </tr>   
                         {% endfor%}
                         

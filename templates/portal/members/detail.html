@@ -1,0 +1,483 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock styles%}
+
+{% block content-space %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="medical-tab" data-toggle="tab" href="#medical" role="tab" aria-controls="medical" aria-selected="false">Medical Profile</a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">General Examination</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="systemic-tab" data-toggle="tab" href="#systemic" role="tab" aria-controls="systemic" aria-selected="false">Systemic Examination</a>
+      </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <hr>
+        <h4>Details</h4>
+        <a href="{% url 'member_details_update' member_pk %}">Edit Details</a>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Value</th>
+                
+            </tr>
+        </thead>
+     
+        <tbody>
+            <tr>
+                <td>last Name</td>
+                <td>{{member.last_name}}</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>{{member.last_name}}</td>
+            </tr>
+            <tr>
+                <td>Wo/Ho/So/Do</td>
+                <td>{{member.wo_ho_so_do}}</td>
+            </tr>
+            <tr>
+                <td>Date Of Birth</td>
+                <td>{{member.dob}}</td>
+            </tr>
+            <tr>
+                <td>Home Address</td>
+                <td>{{member.home_address}}</td>
+            </tr>
+            <tr>
+                <td>Mobile Number 1</td>
+                <td>{{member.mobile_number_1}}</td>
+            </tr>
+            {% if member.mobile_number_2 %}
+            <tr>
+                <td>Mobile Number 1</td>
+                <td>{{member.mobile_number_1}}</td>
+            </tr>
+            {% endif %}
+           
+            <tr>
+                <td>Trainer</td>
+                <td>{{member.trainer.last_name}} {{member.trainer.last_name}}</td>
+            </tr>
+           
+        </tbody>
+        </table>
+        </div>
+        </div>
+
+        <hr>
+        <h4>Goals</h4>
+        <a href="#">Add new Goals</a>
+        {% if goals %}
+        {% for goal in goals %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">{{goal.goal}}</h6>
+            </div>
+            <div class="card-body">
+                {% if goal.completed %}
+                    Completed !
+                {% else %}
+                    Still Working on it !
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+            <h5> No Goals Set</h5>
+        {% endif %}
+
+        <hr>
+      
+
+
+    </div>
+    <div class="tab-pane fade" id="medical" role="tabpanel" aria-labelledby="medical-tab">
+        <hr>
+        <h4>Medical Profile</h4>
+        <a href="">Edit Medical Profile</a>
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#surgeryHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="surgeryHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Surgery History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="surgeryHistory">
+                <div class="card-body">
+                    {{medical_profile.surgery_history}}
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#familyDiseaseHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="familyDiseaseHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Family Disease History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="familyDiseaseHistory">
+                <div class="card-body">
+                    {{medical_profile.family_disease_history}}
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#hospitalizedHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="hospitalizedHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Hospitalized History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="hospitalizedHistory">
+                <div class="card-body">
+                    {{medical_profile.hospotalized_history}}
+                </div>
+            </div>
+        </div> 
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#chronicEarDisease" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="chronicEarDisease">
+                <h6 class="m-0 font-weight-bold text-primary">Chronic Ear Disease</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="chronicEarDisease">
+                <div class="card-body">
+                    {{medical_profile.chronic_ear_disease}}
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#addictionHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="addictionHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Addiction History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="addictionHistory">
+                <div class="card-body">
+                    {{medical_profile.addiction_history}}
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#prolongedDrugIntakeHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="prolongedDrugIntakeHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Prolonged Drug Intake History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="prolongedDrugIntakeHistory">
+                <div class="card-body">
+                    {{medical_profile.prolonged_drug_intake_history}}
+                </div>
+            </div>
+        </div>
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#thyroidHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="thyroidHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Thyroid History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse show" id="thyroidHistory">
+                <div class="card-body">
+                    {{medical_profile.thyorid_history}}
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h4>Diseases</h4>
+        <a href="#">Add Diseases</a>
+        {% if diseases %}
+        {% for disease in diseases %}
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">{{disease.disease}}</h6>
+                </div>
+                <div class="card-body">
+                    {{disease.year}}
+                </div>
+            </div>
+            
+        {% endfor %}
+        {% else %}
+            <h4>No Disease History</h4>
+        {% endif %}
+        <hr>
+
+        
+    </div> 
+    <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+        
+        
+        <div class="card-body">
+            <a href="#">Take A New General Exam</a>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Examination on ({{general_examination.last.date_of_examination}})</th>
+                <th>Result</th>
+                
+            </tr>
+        </thead>
+     
+        <tbody>
+            <tr>
+                <td>Blood Pressure (mm of Hg)</td>
+                <td>{{general_examination.last.blood_pressure}}</td>
+            </tr>
+            <tr>
+                <td>Pulse ( per minute) </td>
+                <td>{{general_examination.last.pulse}}</td>
+            </tr>
+            <tr>
+                <td>Height (cm)</td>
+                <td>{{general_examination.last.height}}</td>
+            </tr>
+            <tr>
+                <td>Weight ( in Kg) </td>
+                <td>{{general_examination.last.weight}}</td>
+            </tr>
+            <tr>
+                <td>Chest Unexpanded ( in cm )</td>
+                <td>{{general_examination.last.chest_unexpanded}}</td>
+            </tr>
+            <tr>
+                <td>Chest Expanded ( in cm )</td>
+                <td>{{general_examination.last.chest_expanded}}</td>
+            </tr>
+            <tr>
+                <td>Others</td>
+                <td>{{general_examination.last.others}}</td>
+            </tr>
+        </tbody>
+        </table>
+        </div>
+        </div>
+
+        <hr>
+
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#historyGeneralExam" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="historyGeneralExam">
+                <h6 class="m-0 font-weight-bold text-primary">History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="historyGeneralExam">
+                <div class="card-body">
+                    
+                    {% if general_examination %}
+                    {% for exam in general_examination %}
+                   
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        <a href="#historyGeneralExam{{forloop.counter}}" class="d-block card-header py-3" data-toggle="collapse"
+                            role="button" aria-expanded="true" aria-controls="historyGeneralExam{{forloop.counter}}">
+                            <h6 class="m-0 font-weight-bold text-primary">Examination on {{exam.date_of_examination}}</h6>
+                        </a>
+                        <!-- Card Content - Collapse -->
+                        <div class="collapse" id="historyGeneralExam{{forloop.counter}}">
+                            <div class="card-body">
+                                <div class="card-body">
+                                
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Examination on ({{exam.date_of_examination}})</th>
+                                        <th>Result</th>
+                                        
+                                    </tr>
+                                </thead>
+                             
+                                <tbody>
+                                    <tr>
+                                        <td>Blood Pressure (mm of Hg)</td>
+                                        <td>{{exam.blood_pressure}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pulse ( per minute) </td>
+                                        <td>{{exam.pulse}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Height (cm)</td>
+                                        <td>{{exam.height}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Weight ( in Kg) </td>
+                                        <td>{{exam.weight}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chest Unexpanded ( in cm )</td>
+                                        <td>{{exam.chest_unexpanded}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chest Expanded ( in cm )</td>
+                                        <td>{{exam.chest_expanded}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Others</td>
+                                        <td>{{exam.others}}</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                                </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                        <h4>No Previous Records Found</h4>
+                    {% endif %}
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+        
+    <div class="tab-pane fade" id="systemic" role="tabpanel" aria-labelledby="systemic-tab">
+
+        <div class="card-body">
+            <a href="#">Take A New Systemic Exam</a>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Examination on ({{systemic_examination.date_of_examination}})</th>
+                <th>Result</th>
+                
+            </tr>
+        </thead>
+     
+        <tbody>
+            <tr>
+                <td>C.N.S</td>
+                <td>{{systemic_examination.last.cns}}</td>
+            </tr>
+            <tr>
+                <td>C.V.S</td>
+                <td>{{systemic_examination.last.cvs}}</td>
+            </tr>
+            <tr>
+                <td>G.I.T</td>
+                <td>{{systemic_examination.last.git}}</td>
+            </tr>
+            <tr>
+                <td>R/S</td>
+                <td>{{systemic_examination.last.rs}}</td>
+            </tr>
+            <tr>
+                <td>E.N.T</td>
+                <td>{{systemic_examination.last.ent}}</td>
+            </tr>
+            <tr>
+                <td>Others</td>
+                <td>{{systemic_examination.last.others}}</td>
+            </tr>
+           
+        </tbody>
+        </table>
+        </div>
+        </div>
+
+        <hr>
+
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#historySystemicExam" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="historySystemicExam">
+                <h6 class="m-0 font-weight-bold text-primary">History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse" id="historySystemicExam">
+                <div class="card-body">
+                   
+                    {% if systemic_examination %}
+                    {% for exam in systemic_examination %}
+                   
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        <a href="#historySystemicExam{{forloop.counter}}" class="d-block card-header py-3" data-toggle="collapse"
+                            role="button" aria-expanded="true" aria-controls="historySystemicExam{{forloop.counter}}">
+                            <h6 class="m-0 font-weight-bold text-primary">Examination on {{exam.date_of_examination}}</h6>
+                        </a>
+                        <!-- Card Content - Collapse -->
+                        <div class="collapse" id="historySystemicExam{{forloop.counter}}">
+                            <div class="card-body">
+                                <div class="card-body">
+                                
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Examination on ({{exam.date_of_examination}})</th>
+                                        <th>Result</th>
+                                        
+                                    </tr>
+                                </thead>
+                             
+                                <tbody>
+                                    <tr>
+                                        <td>C.N.S</td>
+                                        <td>{{systemic_examination.last.cns}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>C.V.S</td>
+                                        <td>{{systemic_examination.last.cvs}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>G.I.T</td>
+                                        <td>{{systemic_examination.last.git}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>R/S</td>
+                                        <td>{{systemic_examination.last.rs}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>E.N.T</td>
+                                        <td>{{systemic_examination.last.ent}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Others</td>
+                                        <td>{{systemic_examination.last.others}}</td>
+                                    </tr>
+                                   
+                                </tbody>
+                                </table>
+                                </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                        <h4>No Previous Records Found</h4>
+                    {% endif %}
+
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock content-space %}

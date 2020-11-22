@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content-space %}
+<form method="post" action="{% url 'member_details_update' %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="next">
+</form>
+{% endblock content-space %}

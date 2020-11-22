@@ -34,7 +34,7 @@ class Member(models.Model):
 
     is_active = models.BooleanField(default=False)
     trainer = models.ForeignKey(
-        Trainer, on_delete=models.SET_NULL, blank=True, null=True
+        Trainer, on_delete=models.SET_NULL, blank=True, null=True, related_name="member"
     )
 
     def __str__(self):
@@ -90,7 +90,7 @@ class Disease(models.Model):
         ("diabetes", "diabetes"),
         ("bronchitis asthama", "bronchitis asthama"),
     )
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="disease")
     medical_profile = models.ForeignKey(
         MedicalProfile, on_delete=models.CASCADE, blank=True, null=True
     )
@@ -126,16 +126,19 @@ class Goal(models.Model):
         ("to reduce stress", "to reduce stress"),
         ("to improve cardiovascular", "to improve cardiovascular"),
     )
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="goal")
     goal = models.CharField(max_length=255, choices=GOAL_CHOICES, null=False)
     other_goals = models.TextField(blank=True, null=True)
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.member.first_name + ' ' + self.member.last_name} - {self.goal}"
 
 
 class GeneralExamination(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(
+        Member, on_delete=models.CASCADE, related_name="general_examination"
+    )
     blood_pressure = models.PositiveIntegerField(
         validators=[
             MinValueValidator(0),
@@ -188,16 +191,21 @@ class GeneralExamination(models.Model):
         blank=True,
     )
     others = models.TextField(null=True, blank=True)
+    date_of_examination = models.DateField()
 
 
 class SystemicExamination(models.Model):
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(
+        Member, on_delete=models.CASCADE, related_name="systemic_examination"
+    )
     cns = models.TextField(null=True, blank=True)
     cvs = models.TextField(null=True, blank=True)
     git = models.TextField(null=True, blank=True)
     rs = models.TextField(null=True, blank=True)
     ent = models.TextField(null=True, blank=True)
     others = models.TextField(null=True, blank=True)
+
+    date_of_examination = models.DateField()
 
 
 class Fee(models.Model):
@@ -209,7 +217,7 @@ class Fee(models.Model):
 
     PAYMENT_METHOD = (("cash", "cash"), ("online", "online"))
 
-    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="fee")
     payment_type = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICES)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)
     date_of_payment = models.DateTimeField(auto_now_add=True)
