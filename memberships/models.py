@@ -210,6 +210,7 @@ class Fee(models.Model):
 
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     payment_type = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICES)
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)
     date_of_payment = models.DateTimeField(auto_now_add=True)
     next_due_date = models.DateField(null=True, blank=True)
     amount_paid = models.PositiveBigIntegerField(default=0)
