@@ -10,3 +10,8 @@
 .search_box input {
     width: 20vw;
 }
+
+.fee-unpaid{
+    background-color: #fa8989;
+    color: white;
+}

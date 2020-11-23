@@ -19,6 +19,9 @@
     <li class="nav-item" role="presentation">
         <a class="nav-link" id="systemic-tab" data-toggle="tab" href="#systemic" role="tab" aria-controls="systemic" aria-selected="false">Systemic Examination</a>
       </li>
+      <li class="nav-item" role="presentation">
+        <a class="nav-link" id="fee-tab" data-toggle="tab" href="#fee" role="tab" aria-controls="fee" aria-selected="false">Fee</a>
+      </li>
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -72,7 +75,10 @@
                 <td>Trainer</td>
                 <td>{{member.trainer.last_name}} {{member.trainer.last_name}}</td>
             </tr>
-           
+          <tr>
+              <td>Is Active</td>
+              <td>{{member.is_active}}</td>
+          </tr> 
         </tbody>
         </table>
         </div>
@@ -103,6 +109,120 @@
         <hr>
       
 
+
+    </div>
+
+
+    <div class="tab-pane fade show active" id="fee" role="tabpanel" aria-labelledby="fee-tab">
+        <!-- fee -->
+        <div class="table-responsive">
+         
+        
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                   
+               
+                </tr>
+            </thead>
+
+            <tbody>
+             
+                    <tr>
+                        <td>Membership Id</td>
+                        <td>{{member.membership_id}}</td>
+                        
+                    </tr>   
+                    <tr>
+                        <td>Name</td>
+                        <td>{{member.fisrt_name}} {{member.last_name}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Payment Type</td>
+                        <td>{{member.fee.last.payment_type}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Date of Payment</td>
+                        <td>{{member.fee.last.date_of_payment}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Amount Paid</td>
+                        <td>{{member.fee.last.amount_paid}}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Next Due Date</td>
+                        <td>{{member.fee.last.next_due_date}}</td>
+                    </tr>
+                  
+                
+            </tbody>
+        </table>
+    </div>
+        <div class="card shadow mb-4">
+            <!-- Card Header - Accordion -->
+            <a href="#paymentHistory" class="d-block card-header py-3" data-toggle="collapse"
+                role="button" aria-expanded="true" aria-controls="paymentHistory">
+                <h6 class="m-0 font-weight-bold text-primary">Payment History</h6>
+            </a>
+            <!-- Card Content - Collapse -->
+            <div class="collapse " id="paymentHistory">
+                <div class="card-body">
+                    <!-- loop -->
+                    {% for fee in fees %}
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        <a href="#paymentHistory{{forloop.counter}}" class="d-block card-header py-3" data-toggle="collapse"
+                            role="button" aria-expanded="true" aria-controls="paymentHistory{{forloop.counter}}">
+                            <h6 class="m-0 font-weight-bold text-primary">Fee Paid On {{fee.date_of_payment}}</h6>
+                        </a>
+                        <!-- Card Content - Collapse -->
+                        <div class="collapse " id="paymentHistory{{forloop.counter}}">
+                            <div class="card-body">
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Date Of Payment</th>
+                                                <th>Payment Type</th>
+                                                <th>Payment Method</th>
+                                                <th>Amount Paid</th>
+                                                <th>Next Due Date</th>
+                                            </tr>
+                                        </thead>
+                            
+                                        <tbody>
+                                         <tr>
+                                             <th>{{fee.date_of_payment}}</th>
+                                             <th>{{fee.payment_type}}</th>
+                                             <th>{{fee.payment_method}}</th>
+                                             <th>{{fee.amount_paid}}</th>
+                                             <th>{{fee.next_due_date}}</th>
+                                         </tr>
+                                                
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+
+  
 
     </div>
     <div class="tab-pane fade" id="medical" role="tabpanel" aria-labelledby="medical-tab">

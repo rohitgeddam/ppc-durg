@@ -25,6 +25,8 @@ from memberships.forms import (
     SystemicExamForm,
 )
 
+import datetime
+
 # Create your views here.
 class MemberList(ListView):
     model = Member
@@ -53,9 +55,13 @@ def memberProfileView(request, pk):
     goals = member.goal.all()
     diseases = member.disease.all()
     medical_profile = member.medical_profile
-    systemic_examination = member.systemic_examination.all()
-    general_examination = member.general_examination.all()
-
+    systemic_examination = member.systemic_examination.all().order_by(
+        "-date_of_examination"
+    )
+    general_examination = member.general_examination.all().order_by(
+        "-date_of_examination"
+    )
+    fees = member.fee.all().order_by("-date_of_payment")
     context = {
         "goals": goals,
         "member": member,
@@ -63,6 +69,7 @@ def memberProfileView(request, pk):
         "medical_profile": medical_profile,
         "systemic_examination": systemic_examination,
         "general_examination": general_examination,
+        "fees": fees,
         "member_pk": pk,
     }
 
@@ -201,4 +208,91 @@ def SystemicExamCreateView(request, pk):
         request,
         "portal/members/member_systemic_exam_add.html",
         {"form": form, "member_id": pk},
+    )
+
+
+class PendingFeeList(ListView):
+    model = Member
+    template_name = "portal/fee/pending_list.html"
+    context_object_name = "members_list"
+    # paginate_by = 20
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+
+        if query:
+            object_list = self.model.objects.annotate(
+                full_name=Concat("first_name", V(" "), "last_name")
+            ).filter(
+                Q(first_name__icontains=query)
+                | Q(last_name__icontains=query)
+                | Q(membership_id__icontains=query)
+                | Q(full_name__icontains=query)
+            )
+
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
+
+class FeeList(ListView):
+    model = Member
+    template_name = "portal/fee/list.html"
+    context_object_name = "members_list"
+    paginate_by = 20
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+
+        if query:
+            object_list = self.model.objects.annotate(
+                full_name=Concat("first_name", V(" "), "last_name")
+            ).filter(
+                Q(first_name__icontains=query)
+                | Q(last_name__icontains=query)
+                | Q(membership_id__icontains=query)
+                | Q(full_name__icontains=query)
+            )
+
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
+
+def PayFee(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    if request.method == "POST":
+        form = FeeForm(
+            request.POST,
+        )
+        if form.is_valid():
+            # do something with the formset.cleaned_data
+            # payment_type = form.cleaned_data["payment_type"]
+            # date_of_payment = datetime.date.today()
+            # last_pay_slip = member.fee.order_by("-date_of_payment")[1]
+            # last_due_date = last_pay_slip.next_due_date
+
+            # unused_days =
+            # if payment_type == "yearly":
+            #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
+            #         days=365
+            #     )
+            # elif payment_type == "half yearly":
+            #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
+            #         days=183
+            #     )
+            # else:
+            #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
+            #         days=31
+            #     )
+            form.instance.member = member
+            form.save()
+
+            return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
+    else:
+        form = FeeForm()
+    return render(
+        request,
+        "portal/fee/pay.html",
+        {"form": form, "member_id": pk, "member": member},
     )

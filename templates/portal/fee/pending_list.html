@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock styles%}
+
+{% block content-space %}
+
+    
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Fee Pending List</h6>
+        </div>
+        
+        <div class="card-body">
+            
+            <div class="table-responsive">
+                
+                    <form method='GET' class="search_box">
+                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Membership ID">
+                        
+                        <input class="btn btn-warning" type='submit' value="Search Profile">
+                    </form>
+                
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Membership ID</th>
+                            <th>Name</th>
+                            <th>Mobile Number</th>
+                            <th>Fee Type</th>
+                            <th>Payment Mode</th>
+                            <th>Due Date</th>
+                            <th>Is Active</th>
+                          <th>Pay Fee</th> 
+                         
+                        </tr>
+                    </thead>
+                    <!-- <tfoot>
+                        <tr>
+                            <th>Membership ID</th>
+                            <th>Name</th>
+                            <th>Mobile Number</th>
+                            <th>Trainer</th>
+                            <th>Join Date</th>
+                            <th>Is Active</th>
+                            <th></th>
+                        </tr>
+                    </tfoot> -->
+                    <tbody>
+                        {% for member in members_list %}
+                            {% if  member.fee.last.is_past_due and member.is_active %}
+                            <tr>
+                                <td>{{member.membership_id}}</td>
+                                <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
+                                <td>{{member.mobile_number_1}}</td>
+                                <td>{{member.fee.last.payment_type}}</td>
+    
+                                <td>{{member.fee.last.payment_method}}</td>
+                                <td>{{member.fee.last.next_due_date}}</td>
+                                <td>{{member.is_active}}</td>
+                               
+                                <td><a href="{% url 'pay_fee' member.pk %}">Pay Now</a></td>
+                            </tr>   
+                           
+                            {% endif %}
+                        
+                        {% endfor%}
+                        
+                    </tbody>
+                </table>
+                {% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content-space %}

@@ -39,4 +39,7 @@ urlpatterns = [
     ),
     path("members/profile/<pk>", views.memberProfileView, name="members_profile"),
     path("members/", views.MemberList.as_view(), name="members_list"),
+    path("pendingfees/", views.PendingFeeList.as_view(), name="pending_fee_list"),
+    path("fees/", views.FeeList.as_view(), name="fee_list"),
+    path("fees/pay/<pk>", views.PayFee, name="pay_fee"),
 ]

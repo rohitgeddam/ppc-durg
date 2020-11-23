@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content-space %}
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Membership ID</th>
+            <th>Name</th>
+            <th>Mobile Number</th>
+           
+        </tr>
+    </thead>
+
+    <tbody>
+        
+            <tr>
+                <td>{{member.membership_id}}</td>
+                <td>{{member.first_name}} {{member.last_name}}</td>
+                <td>{{member.mobile_number_1}}</td>
+            </tr>   
+
+    </tbody>
+</table>
+<form method="post" action="{% url 'pay_fee' member_id %}">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Pay">
+</form>
+{% endblock content-space %}
