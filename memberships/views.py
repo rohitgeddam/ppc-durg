@@ -21,6 +21,23 @@ def membership_form(request):
     return render(request, "memberships/registeration_step1.html", {"form": form})
 
 
+def trainer_form(request):
+
+    if request.method == "POST":
+        form = forms.TrainerForm(request.POST)
+        if form.is_valid():
+            # do something with the formset.cleaned_data
+            form.save()
+            # return HttpResponseRedirect(
+            #     reverse("registerstep2", args=[form.instance.pk])
+            # )
+            return render(request, "memberships/registeration_done.html")
+
+    else:
+        form = forms.TrainerForm()
+    return render(request, "memberships/trainer_register.html", {"form": form})
+
+
 def goal_form(request, pk):
     member = models.Member.objects.filter(pk=pk).first()
     if request.method == "POST":

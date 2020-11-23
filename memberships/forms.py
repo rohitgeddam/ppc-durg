@@ -5,6 +5,10 @@ from django.forms import modelformset_factory
 from django.forms import formset_factory
 
 
+class DateInput(forms.DateInput):
+    input_type = "date"
+
+
 class MemberForm(ModelForm):
     mobile_number_1 = forms.CharField(max_length=10, min_length=10)
     mobile_number_2 = forms.CharField(max_length=10, min_length=10)
@@ -19,12 +23,29 @@ class MemberForm(ModelForm):
         # }
 
 
+class TrainerForm(ModelForm):
+    mobile_number_1 = forms.CharField(max_length=10, min_length=10)
+    mobile_number_2 = forms.CharField(max_length=10, min_length=10)
+
+    class Meta:
+        model = models.Trainer
+        exclude = [
+            "trainer_id",
+        ]
+        # widgets = {
+        #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),
+        # }
+
+
 class GeneralExamForm(ModelForm):
     class Meta:
         model = models.GeneralExamination
         exclude = [
             "member",
         ]
+        widgets = {
+            "date_of_examination": DateInput(),
+        }
 
 
 class SystemicExamForm(ModelForm):
@@ -33,6 +54,9 @@ class SystemicExamForm(ModelForm):
         exclude = [
             "member",
         ]
+        widgets = {
+            "date_of_examination": DateInput(),
+        }
 
 
 # GoalFormSet = modelformset_factory(

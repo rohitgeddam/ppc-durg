@@ -3,6 +3,7 @@ from memberships import views
 from memberships import forms
 
 urlpatterns = [
+    path("trainer/register", views.trainer_form, name="trainer_register"),
     path("step1/", views.membership_form, name="registerstep1"),
     path("step2/<str:pk>", views.goal_form, name="registerstep2"),
     path("step3/<str:pk>", views.medicalprofile_form, name="registerstep3"),

@@ -113,7 +113,7 @@
     </div>
 
 
-    <div class="tab-pane fade show active" id="fee" role="tabpanel" aria-labelledby="fee-tab">
+    <div class="tab-pane fade show" id="fee" role="tabpanel" aria-labelledby="fee-tab">
         <!-- fee -->
         <div class="table-responsive">
          
@@ -227,7 +227,6 @@
     </div>
     <div class="tab-pane fade" id="medical" role="tabpanel" aria-labelledby="medical-tab">
         <hr>
-        <h4>Medical Profile</h4>
         <a href="{% url 'member_medical_profile_update' member_pk medical_profile.pk%}">Edit Medical Profile</a>
         <div class="card shadow mb-4">
             <!-- Card Header - Accordion -->
@@ -345,7 +344,7 @@
     </div> 
     <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
         
-        
+        <hr>
         <div class="card-body">
             <a href="{% url 'member_general_exam_create' member.pk%}">Take A New General Exam</a>
             <div class="table-responsive">
@@ -476,7 +475,7 @@
     </div>
         
     <div class="tab-pane fade" id="systemic" role="tabpanel" aria-labelledby="systemic-tab">
-
+        <hr>
         <div class="card-body">
             <a href="{% url 'member_systemic_exam_create' member.pk%}">Take A New Systemic Exam</a>
             <div class="table-responsive">
