@@ -8,6 +8,8 @@ from memberships.models import (
     Goal,
     GeneralExamination,
     SystemicExamination,
+    Trainer,
+    Fee,
 )
 from django.db.models import Q
 from django.db.models import Value as V
@@ -26,6 +28,8 @@ from memberships.forms import (
 )
 
 import datetime
+
+from attendance.models import AttendanceSheet, MemberAttendance, TrainerAttendance
 
 # Create your views here.
 class MemberList(ListView):
@@ -296,3 +300,37 @@ def PayFee(request, pk):
         "portal/fee/pay.html",
         {"form": form, "member_id": pk, "member": member},
     )
+
+
+def DashboardView(request):
+    members = Member.objects.all()
+    trainers = Trainer.objects.all()
+    sheet = AttendanceSheet.objects.filter(date=datetime.date.today()).first()
+    fees = Fee.objects.all()
+    attendance_started = False
+    if sheet:
+        attendance_started = True
+
+    members_attended = sheet.member_attendance.count()
+    members_present_attendance = 100 * (members_attended / members.count())
+    trainers_attended = sheet.trainer_attendance.count()
+    trainers_present_attendance = 100 * (trainers_attended / trainers.count())
+
+    total_revenue = 0
+    # calculate total revenue
+    for fee in fees:
+        total_revenue = total_revenue + fee.amount_paid
+
+    
+    context = {
+        "members": members,
+        "trainers": trainers,
+        "attendance_started": attendance_started,
+        "sheet": sheet,
+        "members_attended": members_attended,
+        "members_present_attendance": members_present_attendance,
+        "trainers_attended": trainers_attended,
+        "trainers_present_attendance": trainers_present_attendance,
+        "total_revenue": total_revenue,
+    }
+    return render(request, "portal/dashboard.html", context)

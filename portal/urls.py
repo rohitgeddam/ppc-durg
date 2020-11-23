@@ -42,4 +42,5 @@ urlpatterns = [
     path("pendingfees/", views.PendingFeeList.as_view(), name="pending_fee_list"),
     path("fees/", views.FeeList.as_view(), name="fee_list"),
     path("fees/pay/<pk>", views.PayFee, name="pay_fee"),
+    path("", views.DashboardView, name="dashboard"),
 ]
