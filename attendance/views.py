@@ -127,3 +127,30 @@ def TrainerSetOutTime(request, pk):
         print("Member not in")
 
     return HttpResponseRedirect(reverse_lazy("trainer_attendance_list"))
+
+
+def history(request):
+
+    date = request.GET.get("date")
+
+    if date != "":
+        sheet = AttendanceSheet.objects.filter(date=date).first()
+
+        found = False
+        if sheet:
+            found = True
+            members_attendance = sheet.member_attendance.all()
+            trainers_attendance = sheet.trainer_attendance.all()
+
+        else:
+            members_attendance = None
+            trainers_attendance = None
+
+        context = {
+            "found": found,
+            "trainers_attendance": trainers_attendance,
+            "members_attendance": members_attendance,
+        }
+        return render(request, "portal/attendance/history.html", context)
+
+    return render(request, "portal/attendance/history.html")

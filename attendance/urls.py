@@ -2,6 +2,7 @@ from django.urls import path
 from attendance import views
 
 urlpatterns = [
+    path("history", views.history, name="history"),
     path("members/<pk>/attend", views.MemberSetInTime, name="member_attend"),
     path("members/<pk>/attend/out", views.MemberSetOutTime, name="member_attend_out"),
     path("members/", views.MemberList.as_view(), name="member_attendance_list"),

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block styles %}
+    
+{% endblock styles%}
+
+{% block content-space %}
+<form method='GET' class="search_box">
+    <input name="date" type="date" placeholder="Enter Date To Search" id="history-datepicker">
+    <input class="btn btn-warning" type='submit' value="Search By Date">
+</form>
+
+{% if not found %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Error Message</h6>
+        </div>
+        <div class="card-body">
+            No Record For The Date Found!
+        </div>
+    </div>
+{% else %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Members Present</h6>
+    </div>
+    <div class="card-body">
+        {{members_attendance.count}}
+    </div>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Trainers Present</h6>
+    </div>
+    <div class="card-body">
+        {{trainers_attendance.count}} 
+    </div>
+</div>
+       
+<nav>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Attendance History</h6>
+        </div>
+        <div class="card-body">
+            <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-link active" id="nav-member-tab" data-toggle="tab" href="#nav-member" role="tab" aria-controls="nav-member" aria-selected="true">Member Attendance</a>
+                <a class="nav-link" id="nav-trainer-tab" data-toggle="tab" href="#nav-trainer" role="tab" aria-controls="nav-trainer" aria-selected="false">Trainer Attendance</a>
+                
+              </div>
+
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <!-- member -->
+              <div class="tab-pane fade show active" id="nav-member" role="tabpanel" aria-labelledby="nav-member-tab">
+                    
+
+                    <div class="table-responsive">
+                
+                       
+                    
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Membership ID</th>
+                                <th>Name</th>
+                                <th>Mobile Number</th>
+                                
+                               <th>In Time</th>
+                               <th>Out Time</th>
+                               
+                           
+                            </tr>
+                        </thead>
+          
+                        <tbody>
+                            {% for row in members_attendance %} 
+                                <tr>
+                                    <th>{{row.member.membership_id}}</th>
+                                    <th>{{row.member.first_name}} {{row.member.last_name}}</th>
+                                    <th>{{row.member.mobile_number_1}}</th>
+                                    <th>{{row.in_time}}</th>
+                                    <th>{{row.out_time}}</th>
+                                </tr>
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                  
+    
+ 
+                    </div>
+                   
+          
+          
+              </div>
+              
+              <!-- trainer -->
+              <div class="tab-pane fade" id="nav-trainer" role="tabpanel" aria-labelledby="nav-trainer-tab">
+          
+                <div class="table-responsive">
+                
+                       
+                    
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Trainer ID</th>
+                                <th>Name</th>
+                                <th>Mobile Number</th>
+                                
+                               <th>In Time</th>
+                               <th>Out Time</th>
+                               
+                           
+                            </tr>
+                        </thead>
+          
+                        <tbody>
+                            {% for row in trainers_attendance %} 
+                                <tr>
+                                    <th>{{row.trainer.trainer_id}}</th>
+                                    <th>{{row.trainer.first_name}} {{row.trainer.last_name}}</th>
+                                    <th>{{row.trainer.mobile_number_1}}</th>
+                                    <th>{{row.in_time}}</th>
+                                    <th>{{row.out_time}}</th>
+                                </tr>
+                            {% endfor %} 
+                        </tbody>
+                    </table>
+                  
+    
+ 
+                    </div> 
+          
+              </div>
+           
+            </div>
+            
+        </div>
+
+        
+    </div>
+    
+
+    {% endif %}
+
+
+        
+{% endblock content-space %}
