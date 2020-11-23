@@ -18,6 +18,7 @@ class Trainer(models.Model):
     home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

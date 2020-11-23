@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # user apps
     "memberships",
     "portal",
+    "attendance",
     # 3rd party apps
 ]
 

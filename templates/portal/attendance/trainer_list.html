@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock styles%}
+
+{% block content-space %}
+
+    
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Trainers Attendance List</h6>
+        </div>
+        
+        <div class="card-body">
+            
+            <div class="table-responsive">
+                
+                    <form method='GET' class="search_box">
+                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Trainers ID">
+                        
+                        <input class="btn btn-warning" type='submit' value="Search Profile">
+                    </form>
+                
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>trainership ID</th>
+                            <th>Name</th>
+                            <th>Mobile Number</th>
+                            <th>Is Active</th>
+                            <th>In Time</th>
+                           <th>Out Time</th>
+                           <th>Attend</th>
+                       
+                        </tr>
+                    </thead>
+      
+                    <tbody>
+                        {% for trainer in trainers_list %}
+                        
+                            <tr>
+                                <td>{{trainer.trainer_id}}</td>
+                                <td>{{trainer.first_name}} {{trainer.last_name}}</td>
+                                <td>{{trainer.mobile_number_1}}</td>
+                                <td>{{trainer.is_active}}</td>
+                                {% if trainer.trainer_attendance.last.in_time %}
+                                <td>{{trainer.trainer_attendance.last.in_time}}</td>
+                            {% else %}
+                                <td><a href="{% url 'trainer_attend' trainer.pk%}">Set In Time</a></td>    
+                            {% endif %}
+                            {% if trainer.trainer_attendance.last.out_time %}
+                                <td>{{trainer.trainer_attendance.last.out_time}}</td>
+                            {% else %}
+                                <td><a href="{% url 'trainer_attend_out' trainer.pk%}">Set Out Time</a></td>    
+                            {% endif %}
+                            {% if trainer.trainer_attendance.last.in_time %}
+                                <td>Present</td>
+                            {% else %}
+                                <td> - </td> 
+                            {% endif %}
+                                
+                            </tr>   
+                           
+                        {% endfor%}
+                        
+                    </tbody>
+                </table>
+                {% if is_paginated %}
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled page-item"><span class="page-link">&laquo;</span></li>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled page-item"><span class="page-link">&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content-space %}
