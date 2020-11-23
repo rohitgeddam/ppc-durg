@@ -104,8 +104,8 @@ def fee_form(request, pk):
             form.save(commit=False)
             form.instance.member = member
             form.save()
-            # return HttpResponseRedirect(reverse("registerstep4", args=[pk]))
-            return render(request, "memberships/registeration_done.html")
+            return HttpResponseRedirect(reverse("members_profile", args=[pk]))
+            # return render(request, "memberships/registeration_done.html")
 
     else:
         form = forms.FeeForm()

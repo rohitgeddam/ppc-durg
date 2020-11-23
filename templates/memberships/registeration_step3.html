@@ -1,8 +1,30 @@
+
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block styles %}
+    <style>
+        .cad {
+            width: 50vw;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .btn-custom {
+            width: 100%;
+        }
+    </style>
+{% endblock styles %}
 {% block content-space %}
-<form method="post" action="{% url 'registerstep3' pk=member_id %}">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="next">
-</form>
+<div class="card shadow mb-4 cad">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Membership Registeration Step-3</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'registerstep3' pk=member_id %}">
+            {% csrf_token %}
+            {{form|crispy}}
+            <input type="submit" class="btn btn-primary btn-custom" value="next">
+        </form>
+    </div>
+</div>
+
 {% endblock content-space %}

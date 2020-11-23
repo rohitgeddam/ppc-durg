@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "portal",
     "attendance",
     # 3rd party apps
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,4 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     "/var/www/static/",
 ]
+CRISPY_TEMPLATE_PACK = "bootstrap4"

@@ -6,6 +6,9 @@ from django.forms import formset_factory
 
 
 class MemberForm(ModelForm):
+    mobile_number_1 = forms.CharField(max_length=10, min_length=10)
+    mobile_number_2 = forms.CharField(max_length=10, min_length=10)
+
     class Meta:
         model = models.Member
         exclude = [
