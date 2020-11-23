@@ -131,3 +131,6 @@ STATICFILES_DIRS = [
     "/var/www/static/",
 ]
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+LOGIN_REDIRECT_URL = "/portal"
+LOGOUT_REDIRECT_URL = "login"

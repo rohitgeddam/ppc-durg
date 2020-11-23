@@ -12,7 +12,10 @@ import datetime
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 
+
 # Create your views here.
+
+
 class MemberList(ListView):
     model = Member
     template_name = "portal/attendance/member_list.html"
