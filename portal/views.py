@@ -48,6 +48,8 @@ class MemberList(ListView):
                 | Q(last_name__icontains=query)
                 | Q(membership_id__icontains=query)
                 | Q(full_name__icontains=query)
+                | Q(mobile_number_1__icontains=query)
+                | Q(mobile_number_2__icontains=query)
             )
         else:
             object_list = self.model.objects.all()
@@ -232,6 +234,8 @@ class PendingFeeList(ListView):
                 | Q(last_name__icontains=query)
                 | Q(membership_id__icontains=query)
                 | Q(full_name__icontains=query)
+                | Q(mobile_number_1__icontains=query)
+                | Q(mobile_number_2__icontains=query)
             )
 
         else:
@@ -256,6 +260,8 @@ class FeeList(ListView):
                 | Q(last_name__icontains=query)
                 | Q(membership_id__icontains=query)
                 | Q(full_name__icontains=query)
+                | Q(mobile_number_1__icontains=query)
+                | Q(mobile_number_2__icontains=query)
             )
 
         else:
@@ -311,17 +317,22 @@ def DashboardView(request):
     if sheet:
         attendance_started = True
 
-    members_attended = sheet.member_attendance.count()
-    members_present_attendance = 100 * (members_attended / members.count())
-    trainers_attended = sheet.trainer_attendance.count()
-    trainers_present_attendance = 100 * (trainers_attended / trainers.count())
+        members_attended = sheet.member_attendance.count()
+        members_present_attendance = 100 * (members_attended / members.count())
+        trainers_attended = sheet.trainer_attendance.count()
+        trainers_present_attendance = 100 * (trainers_attended / trainers.count())
+
+    else:
+        members_attended = 0
+        members_present_attendance = 100 * (members_attended / members.count())
+        trainers_attended = 0
+        trainers_present_attendance = 100 * (trainers_attended / trainers.count())
 
     total_revenue = 0
     # calculate total revenue
     for fee in fees:
         total_revenue = total_revenue + fee.amount_paid
 
-    
     context = {
         "members": members,
         "trainers": trainers,

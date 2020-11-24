@@ -11,7 +11,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Members Attendance List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Members Attendance List   -  {{today}}</h6>
         </div>
         
         <div class="card-body">
@@ -19,9 +19,9 @@
             <div class="table-responsive">
                 
                     <form method='GET' class="search_box">
-                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Membership ID">
+                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Membership ID or Mobile number">
                         
-                        <input class="btn btn-warning" type='submit' value="Search Profile">
+                        <input class="btn btn-primary" type='submit' value="Search">
                     </form>
                 
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -38,10 +38,13 @@
                        
                         </tr>
                     </thead>
-      
+  
                     <tbody>
                         {% for member in members_list %}
-                            {% if member.fee.last.is_past_due %}
+
+                        {% if member.fee.last.is_past_due %}
+                            {% if member.member_attendance.last.sheet.date < today %}
+
                             <tr class="fee-unpaid">
                                 <td>{{member.membership_id}}</td>
                                 <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
@@ -49,48 +52,97 @@
                                 <td>{{member.is_active}}</td>
                                 <td>{{member.fee.last.is_past_due}}</td>
                            
-                                {% if member.member_attendance.last.in_time %}
-                                    <td>{{member.member_attendance.last.in_time}}</td>
-                                {% else %}
+                                
                                     <td><a href="{% url 'member_attend' member.pk%}">Set In Time</a></td>    
-                                {% endif %}
-                                {% if member.member_attendance.last.out_time %}
-                                    <td>{{member.member_attendance.last.out_time}}</td>
-                                {% else %}
+                                
+                                
                                     <td><a href="{% url 'member_attend_out' member.pk%}">Set Out Time</a></td>    
-                                {% endif %}
-                                {% if member.member_attendance.last.in_time %}
-                                    <td>Present</td>
-                                {% else %}
+                             
+                                
                                     <td> - </td> 
-                                {% endif %}
-                                 
-                               
-                            </tr>   
+
+
+                            </tr> 
+
                             {% else %}
-                            <tr>
-                                <td>{{member.membership_id}}</td>
-                                <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
-                                <td>{{member.mobile_number_1}}</td>
-                                <td>{{member.is_active}}</td>
-                                <td>{{member.fee.last.is_past_due}}</td>
-                               
-                                {% if member.member_attendance.last.in_time %}
-                                <td>{{member.member_attendance.last.in_time}}</td>
-                            {% else %}
-                                <td><a href="{% url 'member_attend' member.pk %}">Set In Time</a></td>    
+                                <tr class="fee-unpaid">
+                                    <td>{{member.membership_id}}</td>
+                                    <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
+                                    <td>{{member.mobile_number_1}}</td>
+                                    <td>{{member.is_active}}</td>
+                                    <td>{{member.fee.last.is_past_due}}</td>
+                            
+                                    {% if member.member_attendance.last.in_time %}
+                                        <td>{{member.member_attendance.last.in_time}}</td>
+                                    {% else %}
+                                        <td><a href="{% url 'member_attend' member.pk%}">Set In Time</a></td>    
+                                    {% endif %}
+                                    {% if member.member_attendance.last.out_time %}
+                                        <td>{{member.member_attendance.last.out_time}}</td>
+                                    {% else %}
+                                        <td><a href="{% url 'member_attend_out' member.pk%}">Set Out Time</a></td>    
+                                    {% endif %}
+                                    {% if member.member_attendance.last.in_time %}
+                                        <td>Present</td>
+                                    {% else %}
+                                        <td> - </td> 
+
+                                    {% endif %}
+
+                                </tr> 
+
                             {% endif %}
-                            {% if member.member_attendance.last.out_time %}
-                                    <td>{{member.member_attendance.last.out_time}}</td>
-                                {% else %}
-                                    <td><a href="{% url 'member_attend_out' member.pk%}">Set Out Time</a></td>    
-                                {% endif %}
-                                {% if member.member_attendance.last.in_time %}
-                                <td>Present</td>
+
+
                             {% else %}
-                                <td> - </td> 
+
+
+                            {% if member.member_attendance.last.sheet.date < today %}
+                              
+                                    <tr>
+                                        <td>{{member.membership_id}}</td>
+                                        <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
+                                        <td>{{member.mobile_number_1}}</td>
+                                        <td>{{member.is_active}}</td>
+                                        <td>{{member.fee.last.is_past_due}}</td>
+                                    
+                                        
+                                        <td><a href="{% url 'member_attend' member.pk %}">Set In Time</a></td>    
+                                
+                                            <td><a href="{% url 'member_attend_out' member.pk%}">Set Out Time</a></td>    
+                                    
+                                    
+                                        <td> - </td> 
+                                
+                                    </tr>   
+
+                            {% else %}
+                                    <tr>
+                                        <td>{{member.membership_id}}</td>
+                                        <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
+                                        <td>{{member.mobile_number_1}}</td>
+                                        <td>{{member.is_active}}</td>
+                                        <td>{{member.fee.last.is_past_due}}</td>
+                                    
+                                        {% if member.member_attendance.last.in_time %}
+                                        <td>{{member.member_attendance.last.in_time}}</td>
+                                    {% else %}
+                                        <td><a href="{% url 'member_attend' member.pk %}">Set In Time</a></td>    
+                                    {% endif %}
+                                    {% if member.member_attendance.last.out_time %}
+                                            <td>{{member.member_attendance.last.out_time}}</td>
+                                        {% else %}
+                                            <td><a href="{% url 'member_attend_out' member.pk%}">Set Out Time</a></td>    
+                                        {% endif %}
+                                        {% if member.member_attendance.last.in_time %}
+                                        <td>Present</td>
+                                    {% else %}
+                                        <td> - </td> 
+                                    {% endif %}
+                                    </tr>   
                             {% endif %}
-                            </tr>   
+
+
                            {% endif %}
                         
                         {% endfor%}

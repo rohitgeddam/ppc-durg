@@ -14,25 +14,28 @@ class Trainer(models.Model):
     trainer_id = models.CharField(max_length=255, blank=True, null=False)
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
-    dob = models.DateField(null=False, blank=False, default="2000-05-08")
+    dob = models.DateField()
     home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
-    mobile_number_2 = models.CharField(max_length=10)
+    mobile_number_2 = models.CharField(max_length=10, null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    class Meta:
+        unique_together = ("first_name", "last_name", "dob", "mobile_number_1")
 
 
 class Member(models.Model):
     membership_id = models.CharField(max_length=255, blank=True, null=False)
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
-    dob = models.DateField(null=False, blank=False, default="2000-05-08")
+    dob = models.DateField()
     wo_ho_so_do = models.CharField(max_length=255, null=False, blank=False)
     home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
-    mobile_number_2 = models.CharField(max_length=10)
+    mobile_number_2 = models.CharField(max_length=10, null=True, blank=True)
 
     is_active = models.BooleanField(default=False)
     trainer = models.ForeignKey(
@@ -41,6 +44,9 @@ class Member(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    class Meta:
+        unique_together = ("first_name", "last_name", "dob", "mobile_number_1")
 
 
 @receiver(post_save, sender=Member)
@@ -107,6 +113,9 @@ class Disease(models.Model):
     def __str__(self):
         return f"{self.disease} - {self.member.first_name} {self.member.last_name}"
 
+    class Meta:
+        unique_together = ("member", "disease")
+
 
 @receiver(post_save, sender=Disease)
 def post_disease_handler(sender, instance, created, **kwargs):
@@ -135,6 +144,9 @@ class Goal(models.Model):
 
     def __str__(self):
         return f"{self.member.first_name + ' ' + self.member.last_name} - {self.goal}"
+
+    class Meta:
+        unique_together = ("member", "goal")
 
 
 class GeneralExamination(models.Model):

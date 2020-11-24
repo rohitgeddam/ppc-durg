@@ -11,7 +11,7 @@ class DateInput(forms.DateInput):
 
 class MemberForm(ModelForm):
     mobile_number_1 = forms.CharField(max_length=10, min_length=10)
-    mobile_number_2 = forms.CharField(max_length=10, min_length=10)
+    # mobile_number_2 = forms.CharField(max_length=10, min_length=0)
 
     class Meta:
         model = models.Member
@@ -21,11 +21,14 @@ class MemberForm(ModelForm):
         # widgets = {
         #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),
         # }
+        widgets = {
+            "dob": DateInput(),
+        }
 
 
 class TrainerForm(ModelForm):
     mobile_number_1 = forms.CharField(max_length=10, min_length=10)
-    mobile_number_2 = forms.CharField(max_length=10, min_length=10)
+    # mobile_number_2 = forms.CharField(max_length=10, min_length=0)
 
     class Meta:
         model = models.Trainer
@@ -35,6 +38,9 @@ class TrainerForm(ModelForm):
         # widgets = {
         #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),
         # }
+        widgets = {
+            "dob": DateInput(),
+        }
 
 
 class GeneralExamForm(ModelForm):
@@ -89,7 +95,7 @@ class MedicalProfileForm(ModelForm):
 DiseaseFormset = modelformset_factory(
     models.Disease,
     exclude=["member", "medical_profile"],
-    extra=3,
+    extra=5,
 )
 
 

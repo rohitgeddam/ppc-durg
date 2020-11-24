@@ -11,7 +11,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Trainers Attendance List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Trainers Attendance List  -  {{today}}</h6>
         </div>
         
         <div class="card-body">
@@ -19,9 +19,9 @@
             <div class="table-responsive">
                 
                     <form method='GET' class="search_box">
-                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Trainers ID">
+                        <input type='text' name='q' value='{{ request.GET.q }}' placeholder="Search by Name or Trainers ID or Mobile number">
                         
-                        <input class="btn btn-warning" type='submit' value="Search Profile">
+                        <input class="btn btn-primary" type='submit' value="Search">
                     </form>
                 
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -40,7 +40,22 @@
       
                     <tbody>
                         {% for trainer in trainers_list %}
+                          {% if trainer.trainer_attendance.last.sheet.date < today %}
+                          <tr>
+                            <td>{{trainer.trainer_id}}</td>
+                            <td>{{trainer.first_name}} {{trainer.last_name}}</td>
+                            <td>{{trainer.mobile_number_1}}</td>
+                            <td>{{trainer.is_active}}</td>
+                         
+                            <td><a href="{% url 'trainer_attend' trainer.pk%}">Set In Time</a></td>    
                         
+                            <td><a href="{% url 'trainer_attend_out' trainer.pk%}">Set Out Time</a></td>    
+                        
+                            <td> - </td> 
+                        
+                            
+                          </tr>   
+                          {% else %}
                             <tr>
                                 <td>{{trainer.trainer_id}}</td>
                                 <td>{{trainer.first_name}} {{trainer.last_name}}</td>
@@ -64,6 +79,7 @@
                                 
                             </tr>   
                            
+                          {% endif %}
                         {% endfor%}
                         
                     </tbody>

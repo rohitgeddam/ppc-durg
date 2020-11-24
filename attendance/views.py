@@ -22,6 +22,15 @@ class MemberList(ListView):
     context_object_name = "members_list"
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+
+        context["today"] = datetime.date.today()
+
+        return context
+
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
@@ -32,6 +41,8 @@ class MemberList(ListView):
                 | Q(last_name__icontains=query)
                 | Q(membership_id__icontains=query)
                 | Q(full_name__icontains=query)
+                | Q(mobile_number_1__icontains=query)
+                | Q(mobile_number_2__icontains=query)
             )
         else:
             object_list = self.model.objects.all()
@@ -80,6 +91,15 @@ class TrainerList(ListView):
     context_object_name = "trainers_list"
     paginate_by = 20
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+
+        context["today"] = datetime.date.today()
+
+        return context
+
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
@@ -88,8 +108,10 @@ class TrainerList(ListView):
             ).filter(
                 Q(first_name__icontains=query)
                 | Q(last_name__icontains=query)
-                | Q(trainer_id__icontains=query)
+                | Q(membership_id__icontains=query)
                 | Q(full_name__icontains=query)
+                | Q(mobile_number_1__icontains=query)
+                | Q(mobile_number_2__icontains=query)
             )
         else:
             object_list = self.model.objects.all()
