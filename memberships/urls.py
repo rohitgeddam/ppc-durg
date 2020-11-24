@@ -9,4 +9,5 @@ urlpatterns = [
     path("step3/<str:pk>", views.medicalprofile_form, name="registerstep3"),
     path("step4/<str:pk>", views.disease_form, name="registerstep4"),
     path("step5/<str:pk>", views.fee_form, name="registerstep5"),
+    # path("done/<str:pk>", views.done_pdf, name="done_pdf"),
 ]

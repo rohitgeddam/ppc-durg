@@ -4,6 +4,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from memberships import models
 
+# from django.template.loader import render_to_string
+# from django.core.files.storage import FileSystemStorage
+# from django.http import HttpResponse
+# from weasyprint import HTML
+
 # Create your views here.
 def membership_form(request):
 
@@ -52,10 +57,12 @@ def goal_form(request, pk):
             for form in formset:
 
                 if form.cleaned_data != {}:
-
-                    form.save(commit=False)
-                    form.instance.member = member
-                    form.save()
+                    try:
+                        form.save(commit=False)
+                        form.instance.member = member
+                        form.save()
+                    except:
+                        continue
 
             return HttpResponseRedirect(reverse("registerstep3", args=[pk]))
             # return render(request, "memberships/registeration_done.html")
@@ -103,8 +110,11 @@ def disease_form(request, pk):
             for form in formset:
                 # form.save(commit=False)
                 if form.cleaned_data != {}:
-                    form.instance.member = member
-                    form.save()
+                    try:
+                        form.instance.member = member
+                        form.save()
+                    except:
+                        continue
 
             return HttpResponseRedirect(reverse("registerstep5", args=[pk]))
             # return render(request, "memberships/registeration_step5.html")
@@ -134,10 +144,28 @@ def fee_form(request, pk):
             form.instance.member = member
             form.save()
             return HttpResponseRedirect(reverse("members_profile", args=[pk]))
-            # return render(request, "memberships/registeration_done.html")
 
     else:
         form = forms.FeeForm()
     return render(
         request, "memberships/registeration_step5.html", {"form": form, "member_id": pk}
     )
+
+
+# def done_pdf(request, pk):
+#     member = models.Members.objects.get(pk=pk)
+#     context = {"member": member}
+#     html_string = render_to_string(
+#         "memberships/registeration_done.html", {"context": context}
+#     )
+
+#     html = HTML(string=html_string)
+#     html.write_pdf(target="/tmp/mypdf.pdf")
+
+#     fs = FileSystemStorage("/tmp")
+#     with fs.open("mypdf.pdf") as pdf:
+#         response = HttpResponse(pdf, content_type="application/pdf")
+#         response["Content-Disposition"] = 'attachment; filename="mypdf.pdf"'
+#         return response
+
+#     return response
