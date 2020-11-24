@@ -24,7 +24,7 @@ class Trainer(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     class Meta:
-        unique_together = ("first_name", "last_name", "dob", "mobile_number_1")
+        unique_together = ("first_name", "last_name", "mobile_number_1")
 
 
 class Member(models.Model):
@@ -46,7 +46,7 @@ class Member(models.Model):
         return f"{self.first_name} {self.last_name}"
 
     class Meta:
-        unique_together = ("first_name", "last_name", "dob", "mobile_number_1")
+        unique_together = ("first_name", "last_name", "mobile_number_1")
 
 
 @receiver(post_save, sender=Member)
