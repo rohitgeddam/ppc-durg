@@ -11,6 +11,7 @@ def membership_form(request):
         form = forms.MemberForm(request.POST)
         if form.is_valid():
             # do something with the formset.cleaned_data
+            form.instance.registeration_step = 2
             form.save()
             return HttpResponseRedirect(
                 reverse("registerstep2", args=[form.instance.pk])
@@ -49,6 +50,7 @@ def goal_form(request, pk):
             for form in formset:
 
                 if form.cleaned_data != {}:
+                    form.instance.registeration_step = 3
                     form.save(commit=False)
                     form.instance.member = member
                     form.save()
@@ -71,6 +73,7 @@ def medicalprofile_form(request, pk):
         form = forms.MedicalProfileForm(request.POST)
         if form.is_valid():
             # do something with the formset.cleaned_data
+            form.instance.registeration_step = 4
             form.save(commit=False)
             form.instance.member = member
             form.save()
@@ -92,6 +95,7 @@ def disease_form(request, pk):
         )
         if formset.is_valid():
             # do something with the formset.cleaned_data
+            form.instance.registeration_step = 5
             for form in formset:
                 # form.save(commit=False)
                 if form.cleaned_data != {}:
@@ -118,6 +122,8 @@ def fee_form(request, pk):
         form = forms.FeeForm(request.POST)
         if form.is_valid():
             # do something with the formset.cleaned_data
+            form.instance.registeration_step = 0
+            form.instance.is_registeration_done = True
             form.save(commit=False)
             form.instance.member = member
             form.save()

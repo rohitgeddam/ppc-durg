@@ -314,7 +314,7 @@ def DashboardView(request):
     sheet = AttendanceSheet.objects.filter(date=datetime.date.today()).first()
     fees = Fee.objects.all()
     attendance_started = False
-    if sheet:
+    try:
         attendance_started = True
 
         members_attended = sheet.member_attendance.count()
@@ -322,11 +322,11 @@ def DashboardView(request):
         trainers_attended = sheet.trainer_attendance.count()
         trainers_present_attendance = 100 * (trainers_attended / trainers.count())
 
-    else:
+    except:
         members_attended = 0
-        members_present_attendance = 100 * (members_attended / members.count())
+        members_present_attendance = 0
         trainers_attended = 0
-        trainers_present_attendance = 100 * (trainers_attended / trainers.count())
+        trainers_present_attendance = 0
 
     total_revenue = 0
     # calculate total revenue

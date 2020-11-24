@@ -17,6 +17,8 @@ class MemberForm(ModelForm):
         model = models.Member
         exclude = [
             "membership_id",
+            "is_registeration_done",
+            "registeration_step",
         ]
         # widgets = {
         #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),

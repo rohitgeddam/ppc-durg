@@ -42,6 +42,9 @@ class Member(models.Model):
         Trainer, on_delete=models.SET_NULL, blank=True, null=True, related_name="member"
     )
 
+    is_registeration_done = models.BooleanField(default=False, null=True, blank=True)
+    registeration_step = models.IntegerField(default=1, blank=True, null=True)
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
