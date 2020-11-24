@@ -18,7 +18,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Membership Registeration Step-1</h6>
     </div>
     <div class="card-body">
-        <form method="post" action="{% url 'registerstep1' %}">
+        <form method="post" action="{% url 'registerstep1' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{form|crispy}}
             <input type="submit" class="btn btn-primary btn-custom" value="next">

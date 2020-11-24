@@ -15,3 +15,8 @@
     background-color: #fa8989;
     color: white;
 }
+
+.profile-pic{
+    width: 30vw; float: left; margin-right: 10px;
+    max-width: 200px;
+} 

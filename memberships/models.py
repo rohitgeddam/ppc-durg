@@ -15,9 +15,12 @@ class Trainer(models.Model):
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
     dob = models.DateField()
+    profile_pic = models.ImageField(upload_to="profile_pic", default="default.png")
+
     home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10, null=True, blank=True)
+
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
@@ -33,11 +36,13 @@ class Member(models.Model):
     last_name = models.CharField(max_length=255, null=False, blank=False)
     dob = models.DateField()
     wo_ho_so_do = models.CharField(max_length=255, null=False, blank=False)
+    profile_pic = models.ImageField(upload_to="profile_pic", default="default.png")
     home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10, null=True, blank=True)
 
     is_active = models.BooleanField(default=False)
+
     trainer = models.ForeignKey(
         Trainer, on_delete=models.SET_NULL, blank=True, null=True, related_name="member"
     )

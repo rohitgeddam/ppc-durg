@@ -18,7 +18,7 @@
         <h6 class="m-0 font-weight-bold text-primary">Trainer Registeration</h6>
     </div>
     <div class="card-body">
-        <form method="post" action="{% url 'trainer_register' %}">
+        <form method="post" action="{% url 'trainer_register' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{form|crispy}}
             <input type="submit" class="btn btn-primary btn-custom" value="Register">
