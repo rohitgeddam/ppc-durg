@@ -107,16 +107,20 @@ def goalCreateView(request, pk):
             request.POST,
         )
         if formset.is_valid():
+
             # do something with the formset.cleaned_data
             for form in formset:
-
                 if form.cleaned_data != {}:
-                    form.save(commit=False)
-                    form.instance.member = member
-                    form.save()
+                    try:
+                        form.save(commit=False)
+                        form.instance.member = member
+                        form.save()
+                    except:
+                        continue
 
             return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
             # return render(request, "memberships/registeration_done.html")
+
     else:
         formset = GoalFormSet()
     return render(
@@ -164,8 +168,11 @@ def diseaseAddView(request, pk):
             for form in formset:
                 # form.save(commit=False)
                 if form.cleaned_data != {}:
-                    form.instance.member = member
-                    form.save()
+                    try:
+                        form.instance.member = member
+                        form.save()
+                    except:
+                        continue
 
             return HttpResponseRedirect(reverse_lazy("members_profile", args=[pk]))
     else:

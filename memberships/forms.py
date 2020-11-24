@@ -80,7 +80,7 @@ class GoalForm(ModelForm):
         exclude = ["member", "other_goals"]
 
 
-GoalFormSet = formset_factory(GoalForm, extra=2)
+GoalFormSet = formset_factory(GoalForm, extra=5)
 
 
 class MedicalProfileForm(ModelForm):
