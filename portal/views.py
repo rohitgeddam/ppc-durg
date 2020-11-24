@@ -58,6 +58,12 @@ class MemberList(ListView):
 
 def memberProfileView(request, pk):
     member = Member.objects.filter(pk=pk).first()
+
+    if not member.is_registeration_done:
+        return HttpResponseRedirect(
+            reverse(f"registerstep{member.registeration_step}", args=[pk])
+        )
+
     goals = member.goal.all()
     diseases = member.disease.all()
     medical_profile = member.medical_profile

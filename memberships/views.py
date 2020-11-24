@@ -47,10 +47,12 @@ def goal_form(request, pk):
         )
         if formset.is_valid():
             # do something with the formset.cleaned_data
+            member.registeration_step = 3
+            member.save()
             for form in formset:
 
                 if form.cleaned_data != {}:
-                    form.instance.registeration_step = 3
+
                     form.save(commit=False)
                     form.instance.member = member
                     form.save()
@@ -73,7 +75,8 @@ def medicalprofile_form(request, pk):
         form = forms.MedicalProfileForm(request.POST)
         if form.is_valid():
             # do something with the formset.cleaned_data
-            form.instance.registeration_step = 4
+            member.registeration_step = 4
+            member.save()
             form.save(commit=False)
             form.instance.member = member
             form.save()
@@ -95,7 +98,8 @@ def disease_form(request, pk):
         )
         if formset.is_valid():
             # do something with the formset.cleaned_data
-            form.instance.registeration_step = 5
+            member.registeration_step = 5
+            member.save()
             for form in formset:
                 # form.save(commit=False)
                 if form.cleaned_data != {}:
@@ -121,9 +125,11 @@ def fee_form(request, pk):
     if request.method == "POST":
         form = forms.FeeForm(request.POST)
         if form.is_valid():
+            member.registeration_step = 0
+            member.is_registeration_done = True
+            member.save()
             # do something with the formset.cleaned_data
-            form.instance.registeration_step = 0
-            form.instance.is_registeration_done = True
+
             form.save(commit=False)
             form.instance.member = member
             form.save()
