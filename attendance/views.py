@@ -108,7 +108,7 @@ class TrainerList(ListView):
             ).filter(
                 Q(first_name__icontains=query)
                 | Q(last_name__icontains=query)
-                | Q(membership_id__icontains=query)
+                | Q(trainer_id__icontains=query)
                 | Q(full_name__icontains=query)
                 | Q(mobile_number_1__icontains=query)
                 | Q(mobile_number_2__icontains=query)
