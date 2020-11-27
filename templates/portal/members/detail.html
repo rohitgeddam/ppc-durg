@@ -47,6 +47,10 @@
                 </td>
             </tr>
             <tr>
+                <td>Membership ID</td>
+                <td>{{member.membership_id}}</td>
+            </tr>
+            <tr>
                 <td>First Name</td>
                 <td>{{member.first_name}}</td>
             </tr>
@@ -85,6 +89,10 @@
               <td>Is Active</td>
               <td>{{member.is_active}}</td>
           </tr> 
+          <tr>
+              <td>Card</td>
+              <td><a href="{% url 'card_print' member.pk %}">View Card</a></td>
+          </tr>
 
          
         </tbody>

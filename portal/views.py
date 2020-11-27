@@ -360,3 +360,9 @@ def DashboardView(request):
         "total_revenue": total_revenue,
     }
     return render(request, "portal/dashboard.html", context)
+
+
+def print_card(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    context = {"member": member}
+    return render(request, "portal/card.html", context)
