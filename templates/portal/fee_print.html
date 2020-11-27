@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CARD</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/_base.css' %}">
+    </head>
+    <body>
+        <div class="fee-slip">
+            <div>
+                <img src="{% static 'img/ppc1.png' %}" alt="" class="ppc-card-img">
+                <h4 class="heading-fee">PPC MEMBERSHIP FEE SLIP</h4>
+
+            </div>
+            
+            <table class="fee-slip-table">
+                <tr>
+                    <th>Membership ID</th>
+                    <td>{{fee.member.membership_id}}</td>
+                </tr>
+                <tr>
+                    <th>Full Name</th>
+                    <td>{{fee.member.first_name}} {{fee.member.last_name}}</td>
+                </tr>
+                <tr>
+                    <th>Payment Mode</th>
+                    <td>{{fee.payment_method}}</td>
+                </tr>
+                <tr>
+                    <th>Date of Payment</th>
+                    <td>{{fee.date_of_payment}}</td>
+                </tr>
+                <tr>
+                    <th>Paid For ( from date )</th>
+                    <td>{{fee.from_date}}</td>
+                </tr>
+                <tr>
+                    <th>Paid For ( to date )</th>
+                    <td>{{fee.to_date}}</td>
+                </tr>
+                <tr>
+                    <th>Amount Paid</th>
+                    <td>RS {{fee.amount_paid}}</td>
+                </tr>
+                <tr>
+                    <th>Authorized Signature</th>
+                    <td></td>
+                </tr>
+
+            </table> 
+        </div>
+        
+    </body>
+</html>

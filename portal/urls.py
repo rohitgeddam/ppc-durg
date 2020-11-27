@@ -43,5 +43,6 @@ urlpatterns = [
     path("fees/", views.FeeList.as_view(), name="fee_list"),
     path("fees/pay/<pk>", views.PayFee, name="pay_fee"),
     path("card/<pk>/print", views.print_card, name="card_print"),
+    path("fees/<str:fee_id>/print", views.print_fee_recipt, name="fee_print"),
     path("", views.DashboardView, name="dashboard"),
 ]
