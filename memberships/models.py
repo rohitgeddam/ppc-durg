@@ -231,19 +231,20 @@ class SystemicExamination(models.Model):
 
 
 class Fee(models.Model):
-    MEMBERSHIP_CHOICES = (
-        ("yearly", "yearly"),
-        ("half yearly", "half yearly"),
-        ("monthly", "monthly"),
-    )
+    # MEMBERSHIP_CHOICES = (
+    #     ("yearly", "yearly"),
+    #     ("half yearly", "half yearly"),
+    #     ("monthly", "monthly"),
+    # )
 
     PAYMENT_METHOD = (("cash", "cash"), ("online", "online"))
 
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="fee")
-    payment_type = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICES)
+    # payment_type = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICES)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)
     date_of_payment = models.DateField(auto_now_add=True)
-    next_due_date = models.DateField(null=True, blank=True)
+    from_date = models.DateField()
+    to_date = models.DateField()
     amount_paid = models.PositiveBigIntegerField(default=0)
 
     def __str__(self):
@@ -251,53 +252,57 @@ class Fee(models.Model):
 
     @property
     def is_past_due(self):
-        if datetime.date.today() > self.next_due_date:
+        all_fee_to_date_desc = Fee.objects.filter(member=self.member).order_by(
+            "-to_date"
+        )
+        last_fee = all_fee_to_date_desc.first()
+        if datetime.date.today() > last_fee.to_date:
             return True
         return False
 
 
-@receiver(post_save, sender=Fee)
-def post_fee_save(sender, instance, created, **kwargs):
-    if created:
-        # member = instance.member
+# @receiver(post_save, sender=Fee)
+# def post_fee_save(sender, instance, created, **kwargs):
+#     if created:
+#         # member = instance.member
 
-        # try:
-        #     last_pay_slip = member.fee.order_by("-date_of_payment")[1]
+#         # try:
+#         #     last_pay_slip = member.fee.order_by("-date_of_payment")[1]
 
-        #     last_due_date = last_pay_slip.next_due_date
+#         #     last_due_date = last_pay_slip.to_date
 
-        #     days_unused = last_due_date - instance.date_of_payment
-        #     if days_unused.days < 0:
-        #         days_unused = 0
-        #     else:
-        #         days_unused = days_unused.days
+#         #     days_unused = last_due_date - instance.date_of_payment
+#         #     if days_unused.days < 0:
+#         #         days_unused = 0
+#         #     else:
+#         #         days_unused = days_unused.days
 
-        # except:
-        #     print("ERROR")
-        #     days_unused = 0
-        # # days_unused = 0
-        # print(days_unused, "DLKFJLKFDS")
-        try:
-            if instance.payment_type == "yearly":
-                instance.next_due_date = (
-                    instance.date_of_payment
-                    + datetime.timedelta(days=365)
-                    # + datetime.timedelta(days=days_unused)
-                )
-            elif instance.payment_type == "half yearly":
-                instance.next_due_date = (
-                    instance.date_of_payment
-                    + datetime.timedelta(days=183)
-                    # + datetime.timedelta(days=days_unused)
-                )
-            else:
-                instance.next_due_date = (
-                    instance.date_of_payment
-                    + datetime.timedelta(days=31)
-                    # + datetime.timedelta(days=days_unused)
-                )
+#         # except:
+#         #     print("ERROR")
+#         #     days_unused = 0
+#         # # days_unused = 0
+#         # print(days_unused, "DLKFJLKFDS")
+#         try:
+#             if instance.payment_type == "yearly":
+#                 instance.to_date = (
+#                     instance.date_of_payment
+#                     + datetime.timedelta(days=365)
+#                     # + datetime.timedelta(days=days_unused)
+#                 )
+#             elif instance.payment_type == "half yearly":
+#                 instance.to_date = (
+#                     instance.date_of_payment
+#                     + datetime.timedelta(days=183)
+#                     # + datetime.timedelta(days=days_unused)
+#                 )
+#             else:
+#                 instance.to_date = (
+#                     instance.date_of_payment
+#                     + datetime.timedelta(days=31)
+#                     # + datetime.timedelta(days=days_unused)
+#                 )
 
-        except:
-            instance.amount_paid = "-1"
+#         except:
+#             instance.amount_paid = "-1"
 
-        instance.save()
+#         instance.save()

@@ -73,7 +73,8 @@ def memberProfileView(request, pk):
     general_examination = member.general_examination.all().order_by(
         "-date_of_examination"
     )
-    fees = member.fee.all().order_by("-date_of_payment")
+    fees = member.fee.all().order_by("-to_date")
+    last_due_payment = member.fee.all().order_by("-to_date").first()
     context = {
         "goals": goals,
         "member": member,
@@ -82,6 +83,7 @@ def memberProfileView(request, pk):
         "systemic_examination": systemic_examination,
         "general_examination": general_examination,
         "fees": fees,
+        "last_fee": last_due_payment,
         "member_pk": pk,
     }
 
@@ -293,19 +295,19 @@ def PayFee(request, pk):
             # payment_type = form.cleaned_data["payment_type"]
             # date_of_payment = datetime.date.today()
             # last_pay_slip = member.fee.order_by("-date_of_payment")[1]
-            # last_due_date = last_pay_slip.next_due_date
+            # last_due_date = last_pay_slip.to_date
 
             # unused_days =
             # if payment_type == "yearly":
-            #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
+            #     form.instance.to_date = date_of_payment + datetime.timedelta(
             #         days=365
             #     )
             # elif payment_type == "half yearly":
-            #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
+            #     form.instance.to_date = date_of_payment + datetime.timedelta(
             #         days=183
             #     )
             # else:
-            #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
+            #     form.instance.to_date = date_of_payment + datetime.timedelta(
             #         days=31
             #     )
             form.instance.member = member

@@ -30,7 +30,6 @@
                             <th>Membership ID</th>
                             <th>Name</th>
                             <th>Mobile Number</th>
-                            <th>Fee Type</th>
                             <th>Payment Mode</th>
                             <th>Due Date</th>
                             <th>Is Active</th>
@@ -56,10 +55,9 @@
                                 <td>{{member.membership_id}}</td>
                                 <td><a href="{% url 'members_profile' member.pk%}">{{member.first_name}} {{member.last_name}}</a></td>
                                 <td>{{member.mobile_number_1}}</td>
-                                <td>{{member.fee.last.payment_type}}</td>
     
                                 <td>{{member.fee.last.payment_method}}</td>
-                                <td>{{member.fee.last.next_due_date}}</td>
+                                <td>{{member.fee.last.to_date}}</td>
                                 <td>{{member.is_active}}</td>
                                
                                 <td><a href="{% url 'pay_fee' member.pk %}">Pay Now</a></td>

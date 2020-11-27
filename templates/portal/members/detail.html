@@ -122,6 +122,7 @@
 
 
     <div class="tab-pane fade show" id="fee" role="tabpanel" aria-labelledby="fee-tab">
+        <a href="{% url 'pay_fee' member.pk%}">Pay Fee </a>
         <!-- fee -->
         <div class="table-responsive">
          
@@ -148,24 +149,24 @@
                         <td>{{member.fisrt_name}} {{member.last_name}}</td>
                     </tr>
 
-                    <tr>
-                        <td>Payment Type</td>
-                        <td>{{member.fee.last.payment_type}}</td>
-                    </tr>
+                 
 
                     <tr>
                         <td>Date of Payment</td>
-                        <td>{{member.fee.last.date_of_payment}}</td>
+                        <td>{{last_fee.date_of_payment}}</td>
                     </tr>
 
                     <tr>
                         <td>Amount Paid</td>
-                        <td>{{member.fee.last.amount_paid}}</td>
+                        <td>{{last_fee.amount_paid}}</td>
                     </tr>
-
                     <tr>
-                        <td>Next Due Date</td>
-                        <td>{{member.fee.last.next_due_date}}</td>
+                        <td>From Date</td>
+                        <td>{{last_fee.from_date}}</td>
+                    </tr>
+                    <tr>
+                        <td>To Date</td>
+                        <td>{{last_fee.to_date}}</td>
                     </tr>
                   
                 
@@ -199,20 +200,20 @@
                                         <thead>
                                             <tr>
                                                 <th>Date Of Payment</th>
-                                                <th>Payment Type</th>
                                                 <th>Payment Method</th>
                                                 <th>Amount Paid</th>
-                                                <th>Next Due Date</th>
+                                                <th>From Date</th>
+                                                <th>To Date</th>
                                             </tr>
                                         </thead>
                             
                                         <tbody>
                                          <tr>
                                              <th>{{fee.date_of_payment}}</th>
-                                             <th>{{fee.payment_type}}</th>
                                              <th>{{fee.payment_method}}</th>
                                              <th>{{fee.amount_paid}}</th>
-                                             <th>{{fee.next_due_date}}</th>
+                                             <th>{{fee.from_date}}</th>
+                                             <th>{{fee.to_date}}</th>
                                          </tr>
                                                 
                                             
