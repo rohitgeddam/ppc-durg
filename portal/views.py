@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, CreateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from memberships.models import (
     Member,
     MedicalProfile,
@@ -32,7 +35,7 @@ import datetime
 from attendance.models import AttendanceSheet, MemberAttendance, TrainerAttendance
 
 # Create your views here.
-class MemberList(ListView):
+class MemberList(LoginRequiredMixin, ListView):
     model = Member
     template_name = "portal/members/list.html"
     context_object_name = "members_list"
@@ -56,6 +59,31 @@ class MemberList(ListView):
         return object_list
 
 
+class TrainerList(LoginRequiredMixin, ListView):
+    model = Trainer
+    template_name = "portal/members/trainer_list.html"
+    context_object_name = "members_list"
+    paginate_by = 20
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        if query:
+            object_list = self.model.objects.annotate(
+                full_name=Concat("first_name", V(" "), "last_name")
+            ).filter(
+                Q(first_name__icontains=query)
+                | Q(last_name__icontains=query)
+                | Q(trainer_id__icontains=query)
+                | Q(full_name__icontains=query)
+                | Q(mobile_number_1__icontains=query)
+                | Q(mobile_number_2__icontains=query)
+            )
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
+
+@login_required
 def memberProfileView(request, pk):
     member = Member.objects.filter(pk=pk).first()
 
@@ -90,7 +118,7 @@ def memberProfileView(request, pk):
     return render(request, "portal/members/detail.html", context)
 
 
-class MemberDetailsUpdate(UpdateView):
+class MemberDetailsUpdate(LoginRequiredMixin, UpdateView):
     model = Member
     form_class = MemberForm
     template_name = "portal/members/member_details_update.html"
@@ -102,6 +130,7 @@ class MemberDetailsUpdate(UpdateView):
         return reverse_lazy("members_profile", kwargs={"pk": memberPk})
 
 
+@login_required
 def goalCreateView(request, pk):
     member = Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -132,7 +161,7 @@ def goalCreateView(request, pk):
     )
 
 
-class GoalUpdateView(UpdateView):
+class GoalUpdateView(LoginRequiredMixin, UpdateView):
     model = Goal
     # fields = "__all__"
     form_class = GoalForm
@@ -145,7 +174,7 @@ class GoalUpdateView(UpdateView):
         return reverse_lazy("members_profile", kwargs={"pk": memberPk})
 
 
-class MedicalProfileUpdateView(UpdateView):
+class MedicalProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = MedicalProfile
     # fields = "__all__"
     form_class = MedicalProfileForm
@@ -158,6 +187,7 @@ class MedicalProfileUpdateView(UpdateView):
         return reverse_lazy("members_profile", kwargs={"pk": memberPk})
 
 
+@login_required
 def diseaseAddView(request, pk):
     member = Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -188,6 +218,7 @@ def diseaseAddView(request, pk):
     )
 
 
+@login_required
 def GeneralExamCreateView(request, pk):
     member = Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -210,6 +241,7 @@ def GeneralExamCreateView(request, pk):
     )
 
 
+@login_required
 def SystemicExamCreateView(request, pk):
     member = Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -232,7 +264,7 @@ def SystemicExamCreateView(request, pk):
     )
 
 
-class PendingFeeList(ListView):
+class PendingFeeList(LoginRequiredMixin, ListView):
     model = Member
     template_name = "portal/fee/pending_list.html"
     context_object_name = "members_list"
@@ -258,7 +290,7 @@ class PendingFeeList(ListView):
         return object_list
 
 
-class FeeList(ListView):
+class FeeList(LoginRequiredMixin, ListView):
     model = Member
     template_name = "portal/fee/list.html"
     context_object_name = "members_list"
@@ -284,6 +316,7 @@ class FeeList(ListView):
         return object_list
 
 
+@login_required
 def PayFee(request, pk):
     member = Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -323,6 +356,7 @@ def PayFee(request, pk):
     )
 
 
+@login_required
 def DashboardView(request):
     members = Member.objects.all()
     trainers = Trainer.objects.all()
@@ -362,14 +396,23 @@ def DashboardView(request):
     return render(request, "portal/dashboard.html", context)
 
 
+@login_required
 def print_card(request, pk):
     member = Member.objects.filter(pk=pk).first()
     context = {"member": member}
     return render(request, "portal/card.html", context)
 
 
+@login_required
 def print_fee_recipt(request, fee_id):
     fee_slip = Fee.objects.filter(pk=fee_id).first()
 
     context = {"fee": fee_slip}
     return render(request, "portal/fee_print.html", context)
+
+
+@login_required
+def print_trainer_card(request, pk):
+    trainer = Trainer.objects.filter(pk=pk).first()
+    context = {"trainer": trainer}
+    return render(request, "portal/trainer_card.html", context)
