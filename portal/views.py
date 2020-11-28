@@ -364,3 +364,10 @@ def print_card(request, pk):
     member = Member.objects.filter(pk=pk).first()
     context = {"member": member}
     return render(request, "portal/card.html", context)
+
+
+def print_fee_recipt(request, fee_id):
+    fee_slip = Fee.objects.filter(pk=fee_id).first()
+
+    context = {"fee": fee_slip}
+    return render(request, "portal/fee_print.html", context)
