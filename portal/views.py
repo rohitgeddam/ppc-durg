@@ -101,7 +101,7 @@ def memberProfileView(request, pk):
     general_examination = member.general_examination.all().order_by(
         "-date_of_examination"
     )
-    fees = member.fee.all().order_by("-date_of_payment")
+    fees = member.fee.all().order_by("-next_due_date")
     context = {
         "goals": goals,
         "member": member,
