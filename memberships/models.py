@@ -32,7 +32,30 @@ class Trainer(models.Model):
 
 
 class Member(models.Model):
+    MEMBERS_CLASSIFICATION = (
+        ("Civilian", "Civilian"),
+        ("Civilian Couples", "Civilian Couples"),
+        (
+            "Civilian Family Package (H, W, 2C)",
+            "Civilian Family Package (H, W, 2C)",
+        ),
+        (
+            "Civilian Family Package (H, W, 1C)",
+            "Civilian Family Package (H, W, 1C)",
+        ),
+        (
+            "C.G Police, CPO s, BSP, Sail, Other Govt. Emp",
+            "C.G Police, CPO s, BSP, Sail, Other Govt. Emp",
+        ),
+        ("Couples (Gov)", "Couples (Gov)"),
+        ("Family Package (H, W, 2C) (Gov)", "Family Package (H, W, 2C) (Gov)"),
+        ("Family Package (H, W, 1C) (Gov)", "Family Package (H, W, 1C) (Gov)"),
+        ("so/do/wife-of (Gov Emp)", "so/do/wife-of (Gov Emp)"),
+    )
     membership_id = models.CharField(max_length=255, blank=True, null=False)
+    membership_classification = models.CharField(
+        max_length=255, choices=MEMBERS_CLASSIFICATION
+    )
     first_name = models.CharField(max_length=255, null=False, blank=False)
     last_name = models.CharField(max_length=255, null=False, blank=False)
     dob = models.DateField()
