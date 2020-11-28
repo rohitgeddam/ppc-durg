@@ -232,17 +232,18 @@ class SystemicExamination(models.Model):
 
 class Fee(models.Model):
     MEMBERSHIP_CHOICES = (
-        ("yearly", "yearly"),
-        ("half yearly", "half yearly"),
-        ("monthly", "monthly"),
+        ("Yearly", "Yearly"),
+        ("Half Yearly", "Half Yearly"),
+        ("Monthly", "Monthly"),
     )
 
-    PAYMENT_METHOD = (("cash", "cash"), ("online", "online"))
+    PAYMENT_METHOD = (("Cash", "Cash"), ("Online", "Online"))
 
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="fee")
     payment_type = models.CharField(max_length=255, choices=MEMBERSHIP_CHOICES)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD)
     date_of_payment = models.DateField(auto_now_add=True)
+    initial_date = models.DateField(null=True, blank=True)
     next_due_date = models.DateField(null=True, blank=True)
     amount_paid = models.PositiveBigIntegerField(default=0)
 
@@ -278,13 +279,13 @@ def post_fee_save(sender, instance, created, **kwargs):
         # # days_unused = 0
         # print(days_unused, "DLKFJLKFDS")
         try:
-            if instance.payment_type == "yearly":
+            if instance.payment_type == "Yearly":
                 instance.next_due_date = (
                     instance.date_of_payment
                     + datetime.timedelta(days=365)
                     # + datetime.timedelta(days=days_unused)
                 )
-            elif instance.payment_type == "half yearly":
+            elif instance.payment_type == "Half Yearly":
                 instance.next_due_date = (
                     instance.date_of_payment
                     + datetime.timedelta(days=183)

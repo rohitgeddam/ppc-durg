@@ -20,8 +20,8 @@
     </div>
     <div class="card-body">
         <form method="post" action="{% url 'member_systemic_exam_create' member_id %}">
-           
-            {{form|crispy}}
+            {% csrf_token %}
+                        {{form|crispy}}
             <input type="submit" class="btn btn-primary btn-custom" value="Add">
         </form>
     </div>
