@@ -34,6 +34,7 @@
                             <th>Payment Mode</th>
                             <th>Amount</th>
                             <th>Last Payed On</th>
+                            <th>Initial Date</th>
                             <th>Next Due Date</th>
                             <th>Is Active</th>
                            <th>Pay Fee</th>
@@ -53,6 +54,7 @@
                                 <td>{{member.fee.last.payment_method}}</td>
                                 <td>{{member.fee.last.amount_paid}}</td>
                                 <td>{{member.fee.last.date_of_payment}}</td>
+                                <td>{{member.fee.last.initial_date}}</td>
                                 <td>{{member.fee.last.next_due_date}}</td>
                                 <td>{{member.is_active}}</td>
                                 <td><a href="{% url 'pay_fee' member.pk %}">Pay</a></td> 
@@ -67,6 +69,7 @@
                                 <td>{{member.fee.last.payment_method}}</td>
                                 <td>{{member.fee.last.amount_paid}}</td>
                                 <td>{{member.fee.last.date_of_payment}}</td>
+                                <td>{{member.fee.last.initial_date}}</td>
                                 <td>{{member.fee.last.next_due_date}}</td>
                                 <td>{{member.is_active}}</td>
                                 <td>Already Paid</td> 

@@ -131,6 +131,7 @@
 
     <div class="tab-pane fade show" id="fee" role="tabpanel" aria-labelledby="fee-tab">
         <!-- fee -->
+        <a href="{% url 'pay_fee' member.pk %}">Pay Fee</a>
         <div class="table-responsive">
          
         
@@ -210,6 +211,7 @@
                                                 <th>Payment Type</th>
                                                 <th>Payment Method</th>
                                                 <th>Amount Paid</th>
+                                                <th>Initial Date</th>
                                                 <th>Next Due Date</th>
                                             </tr>
                                         </thead>
@@ -220,6 +222,7 @@
                                              <th>{{fee.payment_type}}</th>
                                              <th>{{fee.payment_method}}</th>
                                              <th>{{fee.amount_paid}}</th>
+                                             <th>{{fee.initial_date}}</th>
                                              <th>{{fee.next_due_date}}</th>
                                          </tr>
                                                 

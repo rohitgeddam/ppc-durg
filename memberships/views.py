@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from memberships import models
 from django.contrib.auth.decorators import login_required
+from datetime import date
 
 # from django.template.loader import render_to_string
 # from django.core.files.storage import FileSystemStorage
@@ -147,6 +148,7 @@ def fee_form(request, pk):
             # do something with the formset.cleaned_data
 
             form.save(commit=False)
+            form.instance.initial_date = date.today()
             form.instance.member = member
             form.save()
             return HttpResponseRedirect(reverse("members_profile", args=[pk]))

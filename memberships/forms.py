@@ -104,7 +104,10 @@ DiseaseFormset = modelformset_factory(
 class FeeForm(ModelForm):
     class Meta:
         model = models.Fee
-        exclude = ["member", "next_due_date", "date_of_payment"]
+        exclude = ["member", "next_due_date", "date_of_payment", "initial_date"]
         # widgets = {
         #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),
+        # }
+        # widgets = {
+        #     "initial_date": DateInput(),
         # }

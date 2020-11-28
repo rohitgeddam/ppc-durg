@@ -317,6 +317,8 @@ class FeeList(LoginRequiredMixin, ListView):
 @login_required
 def PayFee(request, pk):
     member = Member.objects.filter(pk=pk).first()
+    last_fee = Fee.objects.last()
+
     if request.method == "POST":
         form = FeeForm(
             request.POST,
@@ -341,6 +343,7 @@ def PayFee(request, pk):
             #     form.instance.next_due_date = date_of_payment + datetime.timedelta(
             #         days=31
             #     )
+            form.instance.initial_date = last_fee.next_due_date
             form.instance.member = member
             form.save()
 
