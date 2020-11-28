@@ -111,14 +111,16 @@ class MedicalProfile(models.Model):
         Member, on_delete=models.CASCADE, related_name="medical_profile"
     )
 
-    surgery_history = models.TextField(null=True, blank=True)
-    family_disease_history = models.TextField(null=True, blank=True)
-    hospitalized_history = models.TextField(null=True, blank=True)
+    surgery_history = models.TextField(null=True, blank=True, default="none")
+    family_disease_history = models.TextField(null=True, blank=True, default="none")
+    hospitalized_history = models.TextField(null=True, blank=True, default="none")
 
-    chronic_ear_disease = models.TextField(null=True, blank=True)
-    addiction_history = models.TextField(null=True, blank=True)
-    thyroid_history = models.TextField(null=True, blank=True)
-    prolonged_drug_intake_history = models.TextField(null=True, blank=True)
+    chronic_ear_disease = models.TextField(null=True, blank=True, default="none")
+    addiction_history = models.TextField(null=True, blank=True, default="none")
+    thyroid_history = models.TextField(null=True, blank=True, default="none")
+    prolonged_drug_intake_history = models.TextField(
+        null=True, blank=True, default="none"
+    )
 
     def __str__(self):
         return f"{self.member.first_name} {self.member.last_name}'s profile "
@@ -241,15 +243,16 @@ class GeneralExamination(models.Model):
 
 
 class SystemicExamination(models.Model):
+    CHOICES = (("High", "High"), ("Normal", "Normal"), ("Low", "Low"))
     member = models.ForeignKey(
         Member, on_delete=models.CASCADE, related_name="systemic_examination"
     )
-    cns = models.TextField(null=True, blank=True)
-    cvs = models.TextField(null=True, blank=True)
-    git = models.TextField(null=True, blank=True)
-    rs = models.TextField(null=True, blank=True)
-    ent = models.TextField(null=True, blank=True)
-    others = models.TextField(null=True, blank=True)
+    cns = models.CharField(max_length=10, choices=CHOICES, default="Normal")
+    cvs = models.CharField(max_length=10, choices=CHOICES, default="Normal")
+    git = models.CharField(max_length=10, choices=CHOICES, default="Normal")
+    rs = models.CharField(max_length=10, choices=CHOICES, default="Normal")
+    ent = models.CharField(max_length=10, choices=CHOICES, default="Normal")
+    others = models.TextField(null=True, blank=True, default="Normal")
 
     date_of_examination = models.DateField()
 
