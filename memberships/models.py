@@ -5,6 +5,7 @@ import datetime
 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from dateutil.relativedelta import relativedelta
 
 
 # Create your models here
@@ -281,20 +282,23 @@ def post_fee_save(sender, instance, created, **kwargs):
         try:
             if instance.payment_type == "Yearly":
                 instance.next_due_date = (
-                    instance.date_of_payment
-                    + datetime.timedelta(days=365)
+                    instance.initial_date
+                    # + datetime.timedelta(days=365)
+                    + relativedelta(months=+12)
                     # + datetime.timedelta(days=days_unused)
                 )
             elif instance.payment_type == "Half Yearly":
                 instance.next_due_date = (
-                    instance.date_of_payment
-                    + datetime.timedelta(days=183)
+                    instance.initial_date
+                    # + datetime.timedelta(days=183)
+                    + relativedelta(months=+6)
                     # + datetime.timedelta(days=days_unused)
                 )
             else:
                 instance.next_due_date = (
-                    instance.date_of_payment
-                    + datetime.timedelta(days=31)
+                    instance.initial_date
+                    # + datetime.timedelta(days=31)
+                    + relativedelta(months=+1)
                     # + datetime.timedelta(days=days_unused)
                 )
 
