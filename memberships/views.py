@@ -3,6 +3,7 @@ from memberships import forms
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from memberships import models
+from django.contrib.auth.decorators import login_required
 
 # from django.template.loader import render_to_string
 # from django.core.files.storage import FileSystemStorage
@@ -10,6 +11,7 @@ from memberships import models
 # from weasyprint import HTML
 
 # Create your views here.
+@login_required
 def membership_form(request):
 
     if request.method == "POST":
@@ -27,6 +29,7 @@ def membership_form(request):
     return render(request, "memberships/registeration_step1.html", {"form": form})
 
 
+@login_required
 def trainer_form(request):
 
     if request.method == "POST":
@@ -37,13 +40,13 @@ def trainer_form(request):
             # return HttpResponseRedirect(
             #     reverse("registerstep2", args=[form.instance.pk])
             # )
-            return render(request, "memberships/registeration_done.html")
-
+            return HttpResponseRedirect(reverse("dashboard"))
     else:
         form = forms.TrainerForm()
     return render(request, "memberships/trainer_register.html", {"form": form})
 
 
+@login_required
 def goal_form(request, pk):
     member = models.Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -75,6 +78,7 @@ def goal_form(request, pk):
     )
 
 
+@login_required
 def medicalprofile_form(request, pk):
     member = models.Member.objects.filter(pk=pk).first()
 
@@ -96,6 +100,7 @@ def medicalprofile_form(request, pk):
     )
 
 
+@login_required
 def disease_form(request, pk):
     member = models.Member.objects.filter(pk=pk).first()
     if request.method == "POST":
@@ -129,6 +134,7 @@ def disease_form(request, pk):
     )
 
 
+@login_required
 def fee_form(request, pk):
     member = models.Member.objects.filter(pk=pk).first()
 

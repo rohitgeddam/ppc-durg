@@ -11,7 +11,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Members List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Trainer List</h6>
         </div>
         <div class="card-body">
             
@@ -25,10 +25,10 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>Membership ID</th>
+                            <th>Trainer ID</th>
                             <th>Name</th>
                             <th>Mobile Number</th>
-                            <th>Trainer</th>
+                           
                             <th>Join Date</th>
                             <th>Is Active</th>
                             <th></th>
@@ -48,13 +48,13 @@
                     <tbody>
                         {% for member in members_list %}
                          <tr>
-                            <td>{{member.membership_id}}</td>
+                            <td>{{member.trainer_id}}</td>
                             <td>{{member.first_name}} {{member.last_name}}</td>
                             <td>{{member.mobile_number_1}}</td>
-                            <td>{{member.trainer.first_name}} {{member.trainer.last_name}}</td>
+                            
                             <td>{{member.dob}}</td>
                             <td>{{member.is_active}}</td>
-                            <td><a href="{% url 'members_profile' member.pk %}">View</a></td>
+                            <td><a href="{% url 'card_trainer_print' member.pk %}">View Card</a></td>
                         </tr>   
                         {% endfor%}
                         

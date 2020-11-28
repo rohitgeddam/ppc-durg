@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>CARD</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/_base.css' %}">
+    </head>
+    <body>
+        <div class="profile-card">
+            <div class="ppcimage">
+                <img src="{% static 'img/ppc1.png' %}" alt="" class="ppc-card-img">
+                <div class="heading">PPC TRAINERS CARD</div>
+                <img src="{% static 'img/ppc2.png' %}" alt="" class="ppc-card-img">
+
+            </div>
+
+            <hr>
+            <hr>
+            <div class="card-content">
+                <div class="details">
+                    <table class="details-table">
+                        <tr>
+                            <th>Trainer ID</th>
+                            <td>{{trainer.trainer_id}}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{trainer.first_name}} {{trainer.last_name}}</td>
+                        </tr>
+                        
+                        <tr>
+                            <th>DOB</th>
+                            <td>{{trainer.dob}}</td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td>{{trainer.home_address}}</td>
+                        </tr>
+                        <tr>
+                            <th>Mobile Number</th>
+                            <td>{{trainer.mobile_number_1}}</td>
+                        </tr>
+                        <!-- <tr>
+                            <th>trainership ID</th>
+                            <td>{{trainer.trainership_id}}</td>
+                        </tr> -->
+                    </table>
+                </div>
+                <div class="photo">
+                    <td><img src="{{ trainer.profile_pic.url }}" class="profile-pic-card"/>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

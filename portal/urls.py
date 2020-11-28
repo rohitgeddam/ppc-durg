@@ -39,10 +39,14 @@ urlpatterns = [
     ),
     path("members/profile/<pk>", views.memberProfileView, name="members_profile"),
     path("members/", views.MemberList.as_view(), name="members_list"),
+    path("trainers/", views.TrainerList.as_view(), name="trainers_list"),
     path("pendingfees/", views.PendingFeeList.as_view(), name="pending_fee_list"),
     path("fees/", views.FeeList.as_view(), name="fee_list"),
     path("fees/pay/<pk>", views.PayFee, name="pay_fee"),
     path("card/<pk>/print", views.print_card, name="card_print"),
+    path(
+        "card/trainer/<pk>/print", views.print_trainer_card, name="card_trainer_print"
+    ),
     path("fees/<str:fee_id>/print", views.print_fee_recipt, name="fee_print"),
     path("", views.DashboardView, name="dashboard"),
 ]
