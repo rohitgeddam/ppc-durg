@@ -19,6 +19,7 @@ class MemberForm(ModelForm):
             "membership_id",
             "is_registeration_done",
             "registeration_step",
+            "is_active",
         ]
         # widgets = {
         #     "wo_ho_so_do": forms.CharField(attrs={"cols": 80, "rows": 20}),

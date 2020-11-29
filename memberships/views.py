@@ -143,6 +143,7 @@ def fee_form(request, pk):
         form = forms.FeeForm(request.POST)
         if form.is_valid():
             member.registeration_step = 0
+            member.is_active = True
             member.is_registeration_done = True
             member.save()
             # do something with the formset.cleaned_data

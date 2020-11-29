@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "portal",
     "attendance",
     # 3rd party apps
+    "django_crontab",
     "crispy_forms",
 ]
 
@@ -138,3 +139,6 @@ LOGOUT_REDIRECT_URL = "login"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# At 15:00 everyday
+CRONJOBS = [("00 15 * * *", "memberships.cron.scheculed_member_active_check")]
