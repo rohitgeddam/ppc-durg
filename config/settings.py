@@ -141,4 +141,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 # At 15:00 everyday
-CRONJOBS = [("00 15 * * *", "memberships.cron.scheculed_member_active_check")]
+CRONJOBS = [
+    (
+        "00 15 * * *",
+        "memberships.cron.scheculed_member_active_check",
+        ">> /tmp/scheduled_job.log",
+    )
+]
