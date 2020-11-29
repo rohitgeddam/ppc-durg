@@ -317,7 +317,7 @@ class FeeList(LoginRequiredMixin, ListView):
 @login_required
 def PayFee(request, pk):
     member = Member.objects.filter(pk=pk).first()
-    last_fee = Fee.objects.last()
+    last_fee = member.fee.last()
 
     if request.method == "POST":
         form = FeeForm(
