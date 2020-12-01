@@ -14,6 +14,11 @@ from memberships.models import (
     Trainer,
     Fee,
 )
+
+from attendance.models import (
+    MemberAttendance
+)
+
 from django.db.models import Q
 from django.db.models import Value as V
 from django.db.models.functions import Concat
@@ -82,11 +87,24 @@ class TrainerList(LoginRequiredMixin, ListView):
             object_list = self.model.objects.all()
         return object_list
 
+def convert_seconds_to_hours(seconds):
+    return format(seconds * 0.000277778, '.2f')
 
 @login_required
 def memberProfileView(request, pk):
     member = Member.objects.filter(pk=pk).first()
+    all_days = MemberAttendance.objects.filter(member=member)
 
+    total_days_present = all_days.count()
+
+    # calculate total workout
+    total_workout_seconds = 0.0
+    for day in all_days:
+        diff =  (day.out_time - day.in_time)
+        total_workout_seconds = total_workout_seconds + diff.seconds
+
+    total_workout_hours = convert_seconds_to_hours(total_workout_seconds)
+    # print("TOTAL WORKOUT", total_days_present, convert_seconds_to_hours(total_workout_seconds))
     if not member.is_registeration_done:
         return HttpResponseRedirect(
             reverse(f"registerstep{member.registeration_step}", args=[pk])
@@ -111,6 +129,8 @@ def memberProfileView(request, pk):
         "general_examination": general_examination,
         "fees": fees,
         "member_pk": pk,
+        "total_workout_hours": total_workout_hours,
+        "total_workout_days": total_days_present
     }
 
     return render(request, "portal/members/detail.html", context)

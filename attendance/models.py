@@ -17,8 +17,8 @@ class MemberAttendance(models.Model):
     member = models.ForeignKey(
         Member, on_delete=models.CASCADE, related_name="member_attendance"
     )
-    in_time = models.TimeField(auto_now_add=True)
-    out_time = models.TimeField(blank=True, null=True)
+    in_time = models.DateTimeField(auto_now_add=True)
+    out_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         unique_together = ("sheet", "member")
@@ -34,8 +34,8 @@ class TrainerAttendance(models.Model):
     trainer = models.ForeignKey(
         Trainer, on_delete=models.CASCADE, related_name="trainer_attendance"
     )
-    in_time = models.TimeField(auto_now_add=True)
-    out_time = models.TimeField(blank=True, null=True)
+    in_time = models.DateTimeField(auto_now_add=True)
+    out_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         unique_together = ("sheet", "trainer")
