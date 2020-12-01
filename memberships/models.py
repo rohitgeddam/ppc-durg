@@ -128,10 +128,24 @@ class MedicalProfile(models.Model):
 
 class Disease(models.Model):
     DISEASE_CHOICE = (
-        ("tuberculosis", "tuberculosis"),
-        ("diabetes", "diabetes"),
-        ("bronchitis asthama", "bronchitis asthama"),
+        ("Tuberculosis", "Tuberculosis"),
+        ("Diabetes", "Diabetes"),
+        ("Bronchitis Asthama", "Bronchitis Asthama"),
+        ("Hypertension", "Hypertension"),
+        ("Fits", "Fits"),
+        ("Jaundice", "Jaundice"),
+        ("Rheumatic Fever/Gouts/Arthritis/Lower Back Ache/PIVD", "Rheumatic Fever/Gouts/Arthritis/Lower Back Ache/PIVD"),
+        ("Any Kind Of Heart Disease", "Any Kind Of Heart Disease"),
+        ("Fainting Attacks", "Fainting Attacks"),
+        ("Skin Disease", "Skin Disease"),
+        ("Venereal Disease/ HIV", "Venereal Disease/ HIV"),
+        ("Kidney Disease", "Kidney Disease"),
+        ("Nervous Breakdown/Depression", "Nervous Breakdown/Depression"),
+        ("Fever For Prolonged Duration", "Fever For Prolonged Duration"),
+         ("Diarrhea For Prolonged Duration", "Diarrhea For Prolonged Duration"),
+         ("Glaucoma/Eye Disease/Color Blindness", "Glaucoma/Eye Disease/Color Blindness"),
     )
+
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="disease")
     medical_profile = models.ForeignKey(
         MedicalProfile, on_delete=models.CASCADE, blank=True, null=True
