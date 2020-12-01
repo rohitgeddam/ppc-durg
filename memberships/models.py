@@ -181,9 +181,20 @@ def post_disease_handler(sender, instance, created, **kwargs):
 
 class Goal(models.Model):
     GOAL_CHOICES = (
-        ("to lose weight", "to lose weight"),
-        ("to reduce stress", "to reduce stress"),
-        ("to improve cardiovascular", "to improve cardiovascular"),
+        ("To Lose Weight", "To Lose Weight"),
+        ("To Reduce Stress", "To Reduce Stress"),
+        ("To Improve Cardiovascular", "To Improve Cardiovascular"),
+        ("To Increase Self-Esteem","To Increase Self-Esteem"),
+        ("To Improve Flexibility","To Improve Flexibility"),
+        ("To Lower Cholesterol","To Lower Cholesterol"),
+        ("To Improve Muscular Conditioning","To Improve Muscular Conditioning"),
+        ("To Improve Nutrition Habits","To Improve Nutrition Habits"),
+        ("To Reduce Lower Back Pain","To Reduce Lower Back Pain"),
+        ("To Feel Better Overall","To Feel Better Overall"),
+        ("To Gain Weight/Muscle","To Gain Weight/Muscle"),
+        ("To Tone/Firm","To Tone/Firm"),
+        ("To Increase Energy Level","To Increase Energy Level"),
+        ("To Rehabilitate Injury","To Rehabilitate Injury"),
     )
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name="goal")
     goal = models.CharField(max_length=255, choices=GOAL_CHOICES, null=False)
