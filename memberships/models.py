@@ -60,7 +60,7 @@ class Member(models.Model):
     last_name = models.CharField(max_length=255, null=False, blank=False)
     dob = models.DateField()
     wo_ho_so_do = models.CharField(max_length=255, null=False, blank=False)
-    profile_pic = models.ImageField(upload_to="profile_pic", default="default.png")
+    profile_pic = models.ImageField(upload_to="profile_pic", default="default.jpg")
     home_address = models.CharField(max_length=512, null=False, blank=False)
     mobile_number_1 = models.CharField(max_length=10)
     mobile_number_2 = models.CharField(max_length=10, null=True, blank=True)
