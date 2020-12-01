@@ -417,3 +417,7 @@ def print_trainer_card(request, pk):
     trainer = Trainer.objects.filter(pk=pk).first()
     context = {"trainer": trainer}
     return render(request, "portal/trainer_card.html", context)
+
+@login_required
+def fee_stats(request):
+    return render(request, "portal/fee/stats.html")

@@ -42,6 +42,7 @@ urlpatterns = [
     path("trainers/", views.TrainerList.as_view(), name="trainers_list"),
     path("pendingfees/", views.PendingFeeList.as_view(), name="pending_fee_list"),
     path("fees/", views.FeeList.as_view(), name="fee_list"),
+    path("fees/stats/", views.fee_stats, name="fee_stats"),
     path("fees/pay/<pk>", views.PayFee, name="pay_fee"),
     path("card/<pk>/print", views.print_card, name="card_print"),
     path(
