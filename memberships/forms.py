@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from memberships import models
+
 from django import forms
 from django.forms import modelformset_factory
 from django.forms import formset_factory
@@ -112,3 +113,23 @@ class FeeForm(ModelForm):
         # widgets = {
         #     "initial_date": DateInput(),
         # }
+
+
+class MemberClassificationForm(forms.Form):
+    member_classification = forms.CharField(
+        label="Member Classification",
+        widget=forms.Select(
+            choices=models.MEMBERS_CLASSIFICATION,
+            attrs={
+                "id": "js-member-classification",
+            },
+        ),
+    )
+
+    # membership_duration = forms.CharField(
+    #     label="Membership Duration",
+    #     widget=forms.Select(
+    #         choices=models.MEMBERSHIP_CHOICES,
+    #         attrs={"id": "js-membership-duration", "name": "membership-duration"},
+    #     ),
+    # )

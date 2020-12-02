@@ -32,6 +32,7 @@ from memberships.forms import (
     FeeForm,
     GeneralExamForm,
     SystemicExamForm,
+    MemberClassificationForm,
 )
 
 import datetime
@@ -517,5 +518,54 @@ def get_attendance_stats(request, pk):
             }
     else:
         data = {"message": "Please provide From Date and To Date"}
+
+    return JsonResponse(data)
+
+
+def member_stats(request):
+    active_members = Member.objects.filter(is_active=True)
+    all_members = Member.objects.all()
+    form = MemberClassificationForm()
+    print(active_members)
+    context = {
+        "active_members": active_members,
+        "all_members": all_members,
+        "form": form,
+    }
+    return render(request, "portal/members/stats.html", context)
+
+
+def member_stats_search(request):
+    member_classification = request.GET.get("member_classification", None)
+    # membership_duration = reques.GET.get("membership-duration", None)
+    print(member_classification)
+    member_list = Member.objects.filter(
+        membership_classification=member_classification,
+    )
+    print(member_list)
+
+    id_list = []
+    pk_list = []
+    members_name_list = []
+
+    for member in member_list:
+        pk_list.append(member.pk)
+        members_name_list.append(member.first_name + member.last_name)
+        id_list.append(member.membership_id)
+
+    if len(id_list) > 0:
+        data = {
+            "id_list": id_list,
+            "members_name_list": members_name_list,
+            "pk_list": pk_list,
+            "message": "success",
+        }
+    else:
+        data = {
+            "id_list": id_list,
+            "members_name_list": members_name_list,
+            "pk_list": pk_list,
+            "message": "No records found",
+        }
 
     return JsonResponse(data)

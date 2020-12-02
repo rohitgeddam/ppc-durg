@@ -2,6 +2,8 @@ from django.urls import path
 from portal import views
 
 urlpatterns = [
+    path("members/stats", views.member_stats, name="member_stats"),
+    path("members/stats/search", views.member_stats_search, name="member_stats_search"),
     path(
         "members/profile/details/update/<pk>",
         views.MemberDetailsUpdate.as_view(),

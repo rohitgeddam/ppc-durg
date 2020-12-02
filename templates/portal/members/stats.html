@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+{% endblock styles%}
+
+{% block content-space %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        Stats
+    </div>
+    <div class="card-body">
+        <div class="row">
+
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Members Registered
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{all_members.count}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Active Members
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{active_members.count}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+        <div class="row">
+            <form>
+                {% csrf_token %}
+                {{form.as_table}}
+                <input type="submit" class="btn btn-primary btn-custom" value="Search" id="submit-btn">
+            </form>
+        </div>
+
+        <div class="row">
+           
+            <div class="table-responsive">
+                <table class="table table-bordered" id="durationTable" width="100%" cellspacing="0">
+                    <thead>
+                        
+                    <tr>
+                        <th>Member Id</th>
+                        <th>Member Name</th>
+
+                    </tr>
+                    </thead>
+                          
+                    <tbody id="search-result">
+
+                    </tbody>
+                </table>
+            </div> 
+        </div>
+
+        <div class="row">
+            <div id="js-error-message">
+
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+{% endblock content-space %}
+
+
+{% block scripts%}
+    <script>
+        $("#submit-btn").click(function(e){
+            e.preventDefault();
+            $("#js-error-message").html("")
+            const result_table = $("#search-result")
+            const member_classification = $('#js-member-classification')
+            // const membership_duration = $('#js-membership-duration')
+            result_table.html("")
+            $.ajax({
+                url: "{% url 'member_stats_search' %}",
+                data: {
+                    "member_classification": member_classification.val(),
+                    // "membership_duration": membership_duration.val(),
+                },
+                dataType: 'json',
+
+                success: function(data){
+
+                    if (data["message"] === "success"){
+                        for (let i=0; i < data["id_list"].length; i++){
+                        result_table.append(
+                            `
+                                <tr>
+                                    <td>${data["id_list"][i]}</td>
+                                    <td>${data["members_name_list"][i]}</td>
+                                </tr>
+                            `
+                        )
+                    }
+                    }
+                    else {
+                        $('#js-error-message').html(
+                            `<p style="color: green, font-size:20px;margin: 20px;">${data["message"]}</p>`
+
+                    ) 
+                    }
+                    
+                },
+                failure: function(){
+                    $('#js-error-message').html(
+                        `<p style="color:red, font-size:20px;margin: 20px;">Some Error Occured</p>`
+                    )
+                }
+            })
+        })
+    </script>
+{% endblock scripts %}
