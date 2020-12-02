@@ -451,6 +451,39 @@ def fee_stats(request):
     return render(request, "portal/fee/stats.html")
 
 
+def calculate_revenue_in_range(request):
+    from_date = request.GET.get("from_date", None)
+    to_date = request.GET.get("to_date", None)
+
+    try:
+        paid_fee_in_range = Fee.objects.filter(
+            date_of_payment__gte=from_date, date_of_payment__lte=to_date
+        )
+    except:
+        pass
+
+    if from_date and to_date:
+
+        if from_date > to_date:
+            data = {"message": "From Date must be before To Date"}
+        else:
+            sum = 0
+            for fee in paid_fee_in_range:
+                sum = sum + fee.amount_paid
+
+            data = {
+                "from_date": from_date,
+                "to_date": to_date,
+                "message": "success",
+                "revenue": sum,
+            }
+
+    else:
+        data = {"message": "Please Input Dates"}
+
+    return JsonResponse(data)
+
+
 def get_attendance_stats(request, pk):
     member = Member.objects.filter(pk=pk).first()
     from_date = request.GET.get("from_date", None)

@@ -46,6 +46,11 @@ urlpatterns = [
     path("members/", views.MemberList.as_view(), name="members_list"),
     path("trainers/", views.TrainerList.as_view(), name="trainers_list"),
     path("pendingfees/", views.PendingFeeList.as_view(), name="pending_fee_list"),
+    path(
+        "fees/stats/calculate/",
+        views.calculate_revenue_in_range,
+        name="calculate_revenue",
+    ),
     path("fees/", views.FeeList.as_view(), name="fee_list"),
     path("fees/stats/", views.fee_stats, name="fee_stats"),
     path("fees/pay/<pk>", views.PayFee, name="pay_fee"),

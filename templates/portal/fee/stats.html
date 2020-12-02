@@ -6,5 +6,65 @@
 {% endblock styles%}
 
 {% block content-space %}
-   Hello
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+       Revenue Generated
+    </div>
+    <div class="card-body">
+            <form action="" method="GET" id="fee-stats-form" >
+                <label for="from-date">From</label>
+                <input type="date" name="from_date" id="from_date">
+                <label for="to-date">To</label>
+                <input type="date" name="to_date" id="to_date">
+                <input type="submit" id="submit-btn" value="Check">
+            </form>
+
+            <div id="js-error-message"></div>
+            <div id="js-message-body"></div>
+    </div>
+</div>
 {% endblock content-space %}
+
+
+{% block scripts%}
+    <script>
+        const fromDate = $('#from_date');
+        const toDate = $("#to_date");
+        
+        $("#submit-btn").click(function(e){
+       
+            e.preventDefault();
+            $("#js-error-message").html("")  
+            $("#js-message-body").html("")  
+            $.ajax({
+                url: "{% url 'calculate_revenue' %}",
+                data: {
+                    'from_date': fromDate.val(),
+                    'to_date': toDate.val(),
+                },
+                dataType: 'json',
+
+                success: function(data){
+                    console.log(data)
+                    if(data["message"] === "success"){
+                        $("#js-message-body").html(
+                            `<p style="color: black; font-size: 20px; margin: 20px 0;">Revenue collected form ${data['from_date']} to ${data['to_date']} is <b> RS ${data['revenue']}</b></p>`
+                        )
+                    }
+                    else {
+                        console.log("i ran")
+                        $("#js-error-message").html(
+                            `<p style="color:red;font-size: 20px; margin: 20px 0;">${data["message"]}</p>`
+                        )
+                    }
+                },
+
+                failure: function(){
+                    $("#js-error-message").html(
+                        `<p style="color:red;font-size: 20px; margin: 20px 0;">Some Error Occured</p>`
+                    )
+                }
+            })
+        })
+    </script>
+{% endblock scripts %}
