@@ -15,9 +15,7 @@ from memberships.models import (
     Fee,
 )
 
-from attendance.models import (
-    MemberAttendance
-)
+from attendance.models import MemberAttendance
 
 from django.db.models import Q
 from django.db.models import Value as V
@@ -87,8 +85,10 @@ class TrainerList(LoginRequiredMixin, ListView):
             object_list = self.model.objects.all()
         return object_list
 
+
 def convert_seconds_to_hours(seconds):
-    return format(seconds * 0.000277778, '.2f')
+    return format(seconds * 0.000277778, ".2f")
+
 
 @login_required
 def memberProfileView(request, pk):
@@ -100,8 +100,11 @@ def memberProfileView(request, pk):
     # calculate total workout
     total_workout_seconds = 0.0
     for day in all_days:
-        diff =  (day.out_time - day.in_time)
-        total_workout_seconds = total_workout_seconds + diff.seconds
+        try:
+            diff = day.out_time - day.in_time
+            total_workout_seconds = total_workout_seconds + diff.seconds
+        except:
+            pass
 
     total_workout_hours = convert_seconds_to_hours(total_workout_seconds)
     # print("TOTAL WORKOUT", total_days_present, convert_seconds_to_hours(total_workout_seconds))
@@ -130,7 +133,7 @@ def memberProfileView(request, pk):
         "fees": fees,
         "member_pk": pk,
         "total_workout_hours": total_workout_hours,
-        "total_workout_days": total_days_present
+        "total_workout_days": total_days_present,
     }
 
     return render(request, "portal/members/detail.html", context)
@@ -437,6 +440,7 @@ def print_trainer_card(request, pk):
     trainer = Trainer.objects.filter(pk=pk).first()
     context = {"trainer": trainer}
     return render(request, "portal/trainer_card.html", context)
+
 
 @login_required
 def fee_stats(request):
