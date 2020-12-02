@@ -3,6 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 
 from memberships.models import (
     Member,
@@ -90,13 +91,7 @@ def convert_seconds_to_hours(seconds):
     return format(seconds * 0.000277778, ".2f")
 
 
-@login_required
-def memberProfileView(request, pk):
-    member = Member.objects.filter(pk=pk).first()
-    all_days = MemberAttendance.objects.filter(member=member)
-
-    total_days_present = all_days.count()
-
+def calculate_total_workout_hours(all_days):
     # calculate total workout
     total_workout_seconds = 0.0
     for day in all_days:
@@ -104,10 +99,19 @@ def memberProfileView(request, pk):
             diff = day.out_time - day.in_time
             total_workout_seconds = total_workout_seconds + diff.seconds
         except:
-            pass
+            continue
 
-    total_workout_hours = convert_seconds_to_hours(total_workout_seconds)
-    # print("TOTAL WORKOUT", total_days_present, convert_seconds_to_hours(total_workout_seconds))
+    return convert_seconds_to_hours(total_workout_seconds)
+
+
+@login_required
+def memberProfileView(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    all_days = MemberAttendance.objects.filter(member=member)
+
+    total_days_present = all_days.count()
+
+    total_workout_hours = calculate_total_workout_hours(all_days)
     if not member.is_registeration_done:
         return HttpResponseRedirect(
             reverse(f"registerstep{member.registeration_step}", args=[pk])
@@ -445,3 +449,40 @@ def print_trainer_card(request, pk):
 @login_required
 def fee_stats(request):
     return render(request, "portal/fee/stats.html")
+
+
+def get_attendance_stats(request, pk):
+    member = Member.objects.filter(pk=pk).first()
+    from_date = request.GET.get("from_date", None)
+    to_date = request.GET.get("to_date", None)
+
+    attendance_in_range = MemberAttendance.objects.filter(
+        member__pk=pk, sheet__date__gte=from_date, sheet__date__lte=to_date
+    )
+
+    from_date_obj = datetime.datetime.strptime(from_date, "%Y-%m-%d")
+
+    to_date_obj = datetime.datetime.strptime(to_date, "%Y-%m-%d")
+
+    total_days_in_range = (to_date_obj - from_date_obj).days + 1
+
+    days_present_count = attendance_in_range.count()
+
+    total_workout_hours_in_range = calculate_total_workout_hours(attendance_in_range)
+
+    if from_date and to_date:
+        if from_date_obj > to_date_obj:
+            data = {"message": "From Date must be before To Date"}
+        else:
+            data = {
+                "from_date": from_date,
+                "to_date": to_date,
+                "total_days_in_range": total_days_in_range,
+                "total_days_present_in_range": days_present_count,
+                "total_workout_hours_in_range": total_workout_hours_in_range,
+                "message": "success",
+            }
+    else:
+        data = {"message": "Please provide From Date and To Date"}
+
+    return JsonResponse(data)

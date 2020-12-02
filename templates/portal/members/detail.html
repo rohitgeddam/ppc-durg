@@ -654,89 +654,54 @@
                       </tbody>
                   </table>
               </div>
+
+              <!-- History days search form -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                   Duration Check
+                </div>
+                <div class="card-body">
+                    <form action="" method="GET" id="attendance-form"  data-url="{% url 'get_attendance_stats' member.pk%}">
+                        <label for="from-date">From</label>
+                        <input type="date" name="from_date" id="from_date">
+                        <label for="to-date">To</label>
+                        <input type="date" name="to_date" id="to_date">
+                        <input type="submit" id="submit-btn" value="Check">
+                    </form>
+
+                    <div id="js-error-message"></div>
+                    <!-- duration table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="durationTable" width="100%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Total Days Present</th>
+                                <th>Total Hours Workout</th>
+      
+                            </tr>
+                            </thead>
+                                  <tr>
+                                      <td id="js-workout-days"></td>
+                                      <td id="js-workout-hours"></td>
+                                  </tr>
+                            <tbody>
+      
+                            </tbody>
+                        </table>
+                    </div> 
+
+                </div>
+              </div>
+
           </div>
 
           <hr>
-
-          <div class="card shadow mb-4">
-              <!-- Card Header - Accordion -->
-              <a href="#historySystemicExam" class="d-block card-header py-3" data-toggle="collapse"
-                 role="button" aria-expanded="true" aria-controls="historySystemicExam">
-                  <h6 class="m-0 font-weight-bold text-primary">History</h6>
-              </a>
-              <!-- Card Content - Collapse -->
-              <div class="collapse" id="historySystemicExam">
-                  <div class="card-body">
-
-                      {% if systemic_examination %}
-                          {% for exam in systemic_examination %}
-
-                              <div class="card shadow mb-4">
-                                  <!-- Card Header - Accordion -->
-                                  <a href="#historySystemicExam{{forloop.counter}}" class="d-block card-header py-3" data-toggle="collapse"
-                                     role="button" aria-expanded="true" aria-controls="historySystemicExam{{forloop.counter}}">
-                                      <h6 class="m-0 font-weight-bold text-primary">Examination on {{exam.date_of_examination}}</h6>
-                                  </a>
-                                  <!-- Card Content - Collapse -->
-                                  <div class="collapse" id="historySystemicExam{{forloop.counter}}">
-                                      <div class="card-body">
-                                          <div class="card-body">
-
-                                              <div class="table-responsive">
-                                                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                      <thead>
-                                                      <tr>
-                                                          <th>Examination on ({{exam.date_of_examination}})</th>
-                                                          <th>Result</th>
-
-                                                      </tr>
-                                                      </thead>
-
-                                                      <tbody>
-                                                      <tr>
-                                                          <td>C.N.S</td>
-                                                          <td>{{exam.cns}}</td>
-                                                      </tr>
-                                                      <tr>
-                                                          <td>C.V.S</td>
-                                                          <td>{{exam.cvs}}</td>
-                                                      </tr>
-                                                      <tr>
-                                                          <td>G.I.T</td>
-                                                          <td>{{exam.git}}</td>
-                                                      </tr>
-                                                      <tr>
-                                                          <td>R/S</td>
-                                                          <td>{{exam.rs}}</td>
-                                                      </tr>
-                                                      <tr>
-                                                          <td>E.N.T</td>
-                                                          <td>{{exam.ent}}</td>
-                                                      </tr>
-                                                      <tr>
-                                                          <td>Others</td>
-                                                          <td>{{exam.others}}</td>
-                                                      </tr>
-
-                                                      </tbody>
-                                                  </table>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          {% endfor %}
-                      {% else %}
-                          <h4>No Previous Records Found</h4>
-                      {% endif %}
-
-
-                  </div>
-              </div>
-          </div>
-
       </div>
 
 
   </div>
 {% endblock content-space %}
+
+{% block scripts %}
+  <script src="{% static 'js/detail_page.js'%}"></script>
+{% endblock scripts %}

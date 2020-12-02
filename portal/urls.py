@@ -37,6 +37,11 @@ urlpatterns = [
         views.SystemicExamCreateView,
         name="member_systemic_exam_create",
     ),
+    path(
+        "members/<pk>/stats/attendance",
+        views.get_attendance_stats,
+        name="get_attendance_stats",
+    ),
     path("members/profile/<pk>", views.memberProfileView, name="members_profile"),
     path("members/", views.MemberList.as_view(), name="members_list"),
     path("trainers/", views.TrainerList.as_view(), name="trainers_list"),
