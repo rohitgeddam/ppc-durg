@@ -32,6 +32,7 @@ urlpatterns = [
     path("portal/", include("portal.urls")),
     path("attendance/", include("attendance.urls")),
     path("", redirect_to_login),
+    path("", include("pwa.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

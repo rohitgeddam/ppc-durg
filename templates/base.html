@@ -1,9 +1,11 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
+    {% load pwa %}
+    {% progressive_web_app_meta %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,13 +23,14 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %} " rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/_base.css' %}" rel="stylesheet">
+ 
     {% block styles %}
     {% endblock styles %}
 
 </head>
 
 <body id="page-top">
-
+    
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -466,18 +469,7 @@
     </div>
     <script>
 
-    if('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            // console.log("{% static 'js/sw.js' %}");
-            navigator.serviceWorker.register("{% static 'js/sw.js' %}")
-            .then(reg => {
-                console.log("Registered! ", reg);
-            }).catch(err => {
-                console.log(' Registeration failed: ', err);
-            })
-            // navigator.serviceWorker.register("./sw.js")
-        })
-    }
+
 
     </script>
     <!-- Bootstrap core JavaScript-->
