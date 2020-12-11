@@ -1,0 +1,1 @@
+// const cacheName = 'cache-v1';

@@ -464,7 +464,22 @@
             </div>
         </div>
     </div>
+    <script>
 
+    if('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            // console.log("{% static 'js/sw.js' %}");
+            navigator.serviceWorker.register("{% static 'js/sw.js' %}")
+            .then(reg => {
+                console.log("Registered! ", reg);
+            }).catch(err => {
+                console.log(' Registeration failed: ', err);
+            })
+            // navigator.serviceWorker.register("./sw.js")
+        })
+    }
+
+    </script>
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'vendor/jquery/jquery.min.js' %} "></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
