@@ -152,8 +152,8 @@ CRONJOBS = [
 
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, "static/js", "sw.js")
 
-PWA_APP_NAME = "geeksforgeeks"
-PWA_APP_DESCRIPTION = "GeeksForGeeks PWA"
+PWA_APP_NAME = "pcc-durg"
+PWA_APP_DESCRIPTION = "PCC DURG PWA"
 PWA_APP_THEME_COLOR = "#000000"
 PWA_APP_BACKGROUND_COLOR = "#ffffff"
 PWA_APP_DISPLAY = "standalone"
