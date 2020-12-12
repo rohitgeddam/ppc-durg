@@ -384,7 +384,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Examination on ({{general_examination.last.date_of_examination}})</th>
+                    <th>Examination on ({{general_examination.first.date_of_examination}})</th>
                     <th>Result</th>
 
                 </tr>
@@ -393,31 +393,31 @@
             <tbody>
                 <tr>
                     <td>Blood Pressure (mm of Hg)</td>
-                    <td>{{general_examination.last.blood_pressure}}</td>
+                    <td>{{general_examination.first.blood_pressure}}</td>
                 </tr>
                 <tr>
                     <td>Pulse ( per minute) </td>
-                    <td>{{general_examination.last.pulse}}</td>
+                    <td>{{general_examination.first.pulse}}</td>
                 </tr>
                 <tr>
                     <td>Height (cm)</td>
-                    <td>{{general_examination.last.height}}</td>
+                    <td>{{general_examination.first.height}}</td>
                 </tr>
                 <tr>
                     <td>Weight ( in Kg) </td>
-                    <td>{{general_examination.last.weight}}</td>
+                    <td>{{general_examination.first.weight}}</td>
                 </tr>
                 <tr>
                     <td>Chest Unexpanded ( in cm )</td>
-                    <td>{{general_examination.last.chest_unexpanded}}</td>
+                    <td>{{general_examination.first.chest_unexpanded}}</td>
                 </tr>
                 <tr>
                     <td>Chest Expanded ( in cm )</td>
-                    <td>{{general_examination.last.chest_expanded}}</td>
+                    <td>{{general_examination.first.chest_expanded}}</td>
                 </tr>
                 <tr>
                     <td>Others</td>
-                    <td>{{general_examination.last.others}}</td>
+                    <td>{{general_examination.first.others}}</td>
                 </tr>
             </tbody>
             </table>
@@ -515,7 +515,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
             <tr>
-                <th>Examination on ({{systemic_examination.last.date_of_examination}})</th>
+                <th>Examination on ({{systemic_examination.first.date_of_examination}})</th>
                 <th>Result</th>
                 
             </tr>
@@ -524,27 +524,27 @@
         <tbody>
             <tr>
                 <td>C.N.S</td>
-                <td>{{systemic_examination.last.cns}}</td>
+                <td>{{systemic_examination.first.cns}}</td>
             </tr>
             <tr>
                 <td>C.V.S</td>
-                <td>{{systemic_examination.last.cvs}}</td>
+                <td>{{systemic_examination.first.cvs}}</td>
             </tr>
             <tr>
                 <td>G.I.T</td>
-                <td>{{systemic_examination.last.git}}</td>
+                <td>{{systemic_examination.first.git}}</td>
             </tr>
             <tr>
                 <td>R/S</td>
-                <td>{{systemic_examination.last.rs}}</td>
+                <td>{{systemic_examination.first.rs}}</td>
             </tr>
             <tr>
                 <td>E.N.T</td>
-                <td>{{systemic_examination.last.ent}}</td>
+                <td>{{systemic_examination.first.ent}}</td>
             </tr>
             <tr>
                 <td>Others</td>
-                <td>{{systemic_examination.last.others}}</td>
+                <td>{{systemic_examination.first.others}}</td>
             </tr>
            
         </tbody>
