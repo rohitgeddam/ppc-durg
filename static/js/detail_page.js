@@ -24,7 +24,7 @@ $("#submit-btn").click(
                         `${data["total_days_present_in_range"]} / ${data["total_days_in_range"]}`
                     )
                     $('#js-workout-hours').html(
-                        `${data["total_workout_hours_in_range"]} Hrs`
+                        `${data["total_workout_minutes_in_range"]}`
                     )
                 }
             },

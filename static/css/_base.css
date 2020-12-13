@@ -1,4 +1,13 @@
-
+.nav-heading{ 
+    font-size: 36px;
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+    color: black;
+    
+}
+.navbar {
+    text-align: center;
+}
 .ppc-img{
   height: 50px;
   width: auto;

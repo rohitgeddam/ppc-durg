@@ -89,10 +89,15 @@ class TrainerList(LoginRequiredMixin, ListView):
 
 
 def convert_seconds_to_hours(seconds):
-    return format(seconds * 0.000277778, ".2f")
+    # return format(seconds * 0.000277778, ".2f")
+    return format(seconds / (60 * 60), ".2f")
 
 
-def calculate_total_workout_hours(all_days):
+def convert_seconds_to_minutes(seconds):
+    return format(seconds / 60, ".2f")
+
+
+def calculate_total_workout_time(all_days):
     # calculate total workout
     total_workout_seconds = 0.0
     for day in all_days:
@@ -102,7 +107,10 @@ def calculate_total_workout_hours(all_days):
         except:
             continue
 
-    return convert_seconds_to_hours(total_workout_seconds)
+    return (
+        convert_seconds_to_minutes(total_workout_seconds),
+        convert_seconds_to_hours(total_workout_seconds),
+    )
 
 
 @login_required
@@ -112,7 +120,8 @@ def memberProfileView(request, pk):
 
     total_days_present = all_days.count()
 
-    total_workout_hours = calculate_total_workout_hours(all_days)
+    total_workout_minutes, total_workout_hours = calculate_total_workout_time(all_days)
+
     if not member.is_registeration_done:
         return HttpResponseRedirect(
             reverse(f"registerstep{member.registeration_step}", args=[pk])
@@ -138,6 +147,7 @@ def memberProfileView(request, pk):
         "fees": fees,
         "member_pk": pk,
         "total_workout_hours": total_workout_hours,
+        "total_workout_minutes": total_workout_minutes,
         "total_workout_days": total_days_present,
     }
 
@@ -409,6 +419,7 @@ def DashboardView(request):
     total_revenue = 0
     # calculate total revenue
     for fee in fees:
+        # print(fee.date_of_payment, fee.amount_paid)
         total_revenue = total_revenue + fee.amount_paid
 
     context = {
@@ -502,7 +513,10 @@ def get_attendance_stats(request, pk):
 
     days_present_count = attendance_in_range.count()
 
-    total_workout_hours_in_range = calculate_total_workout_hours(attendance_in_range)
+    (
+        total_workout_minutes_in_range,
+        total_workout_hours_in_range,
+    ) = calculate_total_workout_time(attendance_in_range)
 
     if from_date and to_date:
         if from_date_obj > to_date_obj:
@@ -514,6 +528,7 @@ def get_attendance_stats(request, pk):
                 "total_days_in_range": total_days_in_range,
                 "total_days_present_in_range": days_present_count,
                 "total_workout_hours_in_range": total_workout_hours_in_range,
+                "total_workout_minutes_in_range": total_workout_minutes_in_range,
                 "message": "success",
             }
     else:
@@ -526,7 +541,7 @@ def member_stats(request):
     active_members = Member.objects.filter(is_active=True)
     all_members = Member.objects.all()
     form = MemberClassificationForm()
-    print(active_members)
+    # print(active_members)
     context = {
         "active_members": active_members,
         "all_members": all_members,
@@ -538,11 +553,11 @@ def member_stats(request):
 def member_stats_search(request):
     member_classification = request.GET.get("member_classification", None)
     # membership_duration = reques.GET.get("membership-duration", None)
-    print(member_classification)
+    # print(member_classification)
     member_list = Member.objects.filter(
         membership_classification=member_classification,
     )
-    print(member_list)
+    # print(member_list)
 
     id_list = []
     pk_list = []
