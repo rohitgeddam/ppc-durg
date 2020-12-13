@@ -54,6 +54,13 @@ class Trainer(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+    def save(self, *args, **kwargs):
+        self.first_name = self.first_name.upper()
+        self.last_name = self.last_name.upper()
+        self.home_address = self.home_address.upper()
+        self.wo_ho_so_do = self.wo_ho_so_do.upper()
+        return super(Trainer, self).save(*args, **kwargs)
+
     class Meta:
         unique_together = ("first_name", "last_name", "mobile_number_1")
 
@@ -84,6 +91,13 @@ class Member(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    def save(self, *args, **kwargs):
+        self.first_name = self.first_name.upper()
+        self.last_name = self.last_name.upper()
+        self.home_address = self.home_address.upper()
+        self.wo_ho_so_do = self.wo_ho_so_do.upper()
+        return super(Member, self).save(*args, **kwargs)
 
     class Meta:
         unique_together = ("first_name", "last_name", "mobile_number_1")
