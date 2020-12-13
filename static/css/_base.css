@@ -1,3 +1,10 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
 .nav-heading{ 
     font-size: 36px;
     font-weight: 500;
@@ -9,10 +16,25 @@
     text-align: center;
 }
 .ppc-img{
-  height: 50px;
+  height: 100%;
   width: auto;
 }  
 
+.login-image-div {
+    display:flex;
+    margin: 2px solid;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.ppc-img-login{
+    max-width: 300px;
+    max-height: 300px;
+} 
+.login-image-div > p {
+    font-size: 45px;
+    font-weight: 400;
+}
 .ppc-img2{
     position: absolute;
     right:50px;

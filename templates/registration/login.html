@@ -23,7 +23,7 @@
     
         <!-- Custom styles for this template-->
         <link href="{% static 'css/sb-admin-2.min.css' %} " rel="stylesheet">
-    
+        <link rel="stylesheet" href="{% static 'css/_base.css' %}">
         {% block styles %}
         {% endblock styles %}
     
@@ -41,19 +41,28 @@
     <body>
         
 
-        <div class="card shadow mb-4 cad">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Log In</h6>
+
+            <div class="card shadow mb-4 cad">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Log In</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <input type="submit" class="btn btn-primary btn-custom" value="Log In">
+                    </form>
+                </div>
+                
+                
+               
             </div>
-            <div class="card-body">
-                <form method="post">
-                    {% csrf_token %}
-                    {{form|crispy}}
-                    <input type="submit" class="btn btn-primary btn-custom" value="Log In">
-                </form>
+            <div class="login-image-div">
+                <img src="{% static 'img/ppc2.png' %}" alt="PPC IMAGE" class="ppc-img-login">
+                <p>PPC DURG</p>
             </div>
-            <img src="{% static 'img/ppc2.png' %}" alt="" class="ppc-img">
-        </div>
+   
+       
         
         
                   
